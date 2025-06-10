@@ -69,3 +69,7 @@ dist/
 test-results/
 playwright-report/
 playwright/.cache/
+/src/generated/prisma
+
+# Uploaded files
+public/uploads/

@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth from 'next-auth'
 import type { NextAuthOptions } from 'next-auth'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { prisma } from '@/lib/prisma'
 
 const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     {
       id: 'orcid',

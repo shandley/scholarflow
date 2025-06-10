@@ -9,13 +9,24 @@ interface ProfilePageProps {
   }>
 }
 
-// This would normally fetch from a database
+// Fetch profile from database via API
 async function getProfile(username: string): Promise<AcademicProfile | null> {
-  // For now, return mock data for demo purposes
-  // In a real app, this would query your database
-  
-  // Simulate different profiles based on username
-  if (username === 'john-doe') {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/api/profile/${username}`, {
+      cache: 'no-store'
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    const data = await response.json()
+    return data.profile
+  } catch (error) {
+    console.error('Error fetching profile:', error)
+    
+    // Fallback to demo profile for development
+    if (username === 'john-doe') {
     return {
       id: '1',
       username: 'john-doe',

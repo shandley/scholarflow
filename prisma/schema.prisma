@@ -1,0 +1,277 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User account model
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  accounts        Account[]
+  sessions        Session[]
+  profile         Profile?
+}
+
+// NextAuth Account model
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  orcidId           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// NextAuth Session model
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Academic Profile model
+model Profile {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  username           String    @unique
+  
+  // Basic Information
+  firstName          String
+  lastName           String
+  displayName        String?
+  bio                String?
+  profilePhoto       String?
+  
+  // Current Position
+  currentPosition    String?
+  currentInstitution String?
+  currentDepartment  String?
+  
+  // ORCID Integration
+  orcidId            String?
+  lastOrcidSync      DateTime?
+  
+  // Contact & Links
+  website            String?
+  
+  // Profile Settings
+  template           ProfileTemplate @default(MINIMAL)
+  visibility         ProfileVisibility @default(PUBLIC)
+  customDomain       String?
+  
+  // Metadata
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  publishedAt        DateTime?
+  
+  // Relations
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publications       Publication[]
+  education          Education[]
+  positions          Position[]
+  awards             Award[]
+  grants             Grant[]
+  socialLinks        SocialLink[]
+  files              File[]
+}
+
+// Publication model
+model Publication {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  title           String
+  authors         String[]
+  journal         String?
+  year            Int
+  doi             String?
+  url             String?
+  citationCount   Int?
+  type            PublicationType
+  abstract        String?
+  keywords        String[]
+  orcidWorkId     String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Education model
+model Education {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  institution     String
+  degree          String
+  field           String
+  startYear       Int
+  endYear         Int?
+  current         Boolean  @default(false)
+  description     String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Position model
+model Position {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  title           String
+  institution     String
+  department      String?
+  startYear       Int
+  endYear         Int?
+  current         Boolean  @default(false)
+  description     String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Award model
+model Award {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  title           String
+  organization    String
+  year            Int
+  description     String?
+  amount          String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Grant model
+model Grant {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  title           String
+  agency          String
+  role            GrantRole
+  startYear       Int
+  endYear         Int?
+  amount          String?
+  status          GrantStatus
+  description     String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Social Link model
+model SocialLink {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  platform        String
+  url             String
+  displayName     String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// File model for uploads
+model File {
+  id              String   @id @default(cuid())
+  profileId       String
+  
+  filename        String
+  mimetype        String
+  size            Int
+  url             String
+  type            FileType
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// Enums
+enum ProfileTemplate {
+  MINIMAL
+  RESEARCH_FOCUSED
+  TEACHING_ORIENTED
+  INDUSTRY_HYBRID
+}
+
+enum ProfileVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum PublicationType {
+  JOURNAL_ARTICLE
+  BOOK
+  BOOK_CHAPTER
+  CONFERENCE_PAPER
+  PREPRINT
+  OTHER
+}
+
+enum GrantRole {
+  PI
+  CO_PI
+  CO_I
+  OTHER
+}
+
+enum GrantStatus {
+  ACTIVE
+  COMPLETED
+  PENDING
+}
+
+enum FileType {
+  PROFILE_PHOTO
+  CV
+  RESUME
+  OTHER
+}

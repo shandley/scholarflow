@@ -75,17 +75,34 @@ export default function CreateProfile() {
     setIsLoading(true)
 
     try {
-      // Here we would save the profile to our database
-      // For now, we'll simulate the process and redirect to the profile
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Generate a username from the name
-      const username = `${formData.firstName}-${formData.lastName}`.toLowerCase().replace(/\s+/g, '-')
+      // Prepare the profile data
+      const profileData = {
+        ...formData,
+        orcidId: session?.user.orcidId,
+        publications: publications,
+        socialLinks: [],
+      }
+
+      // Save the profile to database
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to create profile')
+      }
       
       // Redirect to the new profile
-      router.push(`/profile/${username}`)
+      router.push(`/profile/${result.profile.username}`)
     } catch (error) {
       console.error('Error creating profile:', error)
+      alert(error instanceof Error ? error.message : 'Failed to create profile. Please try again.')
     } finally {
       setIsLoading(false)
     }

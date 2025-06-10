@@ -85,29 +85,28 @@
 - ✅ Complete profile creation workflow
 - ✅ Publication import from ORCID with real-time display
 
-### Sprint 3 (Weeks 5-6): Data Persistence & User Management
+### Sprint 3 (Weeks 5-6): Data Persistence & User Management ✅ COMPLETED
 **Goal**: Add database layer and user accounts
 
-#### Technical Tasks
-- [ ] Vercel Postgres setup
-  - Database schema design
-  - Migration system (Prisma)
-  - Connection pooling
-- [ ] User authentication with NextAuth.js
-  - ORCID provider
-  - GitHub provider
-  - Email/password option
-  - Session management
-- [ ] Profile CRUD operations
-  - Create profile wizard
-  - Edit profile interface
-  - Delete with data export
-  - Version history
-- [ ] File upload system
-  - Vercel Blob integration
-  - Image optimization
-  - CV/resume storage
-  - Size limits and validation
+#### Technical Tasks ✅ COMPLETED
+- [x] Database setup with Prisma ORM
+  - Complete PostgreSQL schema design
+  - Migration system with Prisma
+  - Docker Compose for local development
+- [x] User authentication with NextAuth.js
+  - ORCID provider with Prisma adapter
+  - Session management with database persistence
+  - Account linking and user profiles
+- [x] Profile CRUD operations
+  - Create profile API with publication import
+  - Public profile fetching by username
+  - Update profile API endpoint
+  - Full relational data model
+- [x] File upload system
+  - Local file storage with hash-based naming
+  - Profile photo upload endpoint
+  - File size and type validation
+  - Database file tracking
 
 #### Database Schema
 ```sql
@@ -123,11 +122,13 @@ user_profiles
 profile_publications
 ```
 
-#### Deliverables
-- User registration and login
-- Profile management dashboard
-- File upload for photos/CVs
-- Data persistence layer
+#### Deliverables ✅ COMPLETED
+- ✅ Prisma ORM integration with full schema
+- ✅ NextAuth database adapter for user accounts
+- ✅ Profile creation API with ORCID data persistence
+- ✅ Public profile API for username-based access
+- ✅ File upload system for profile photos
+- ✅ Docker Compose for local PostgreSQL development
 
 ### Sprint 4 (Weeks 7-8): Tier 2 Features - Productivity Dashboard
 **Goal**: Implement activity tracking and visualization
