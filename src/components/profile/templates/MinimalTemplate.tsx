@@ -1,6 +1,7 @@
 import type { AcademicProfile } from '@/types/profile'
 import PublicationList from '../PublicationList'
 import ContactInfo from '../ContactInfo'
+import ProfileHeader from '../ProfileHeader'
 import Link from 'next/link'
 
 interface MinimalTemplateProps {
@@ -10,7 +11,8 @@ interface MinimalTemplateProps {
 export default function MinimalTemplate({ profile }: MinimalTemplateProps) {
   return (
     <div className="min-h-screen bg-warm-beige">
-      <div className="container mx-auto px-6 py-12">
+      <ProfileHeader profile={profile}>
+        <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <header className="text-center mb-12">
@@ -91,6 +93,7 @@ export default function MinimalTemplate({ profile }: MinimalTemplateProps) {
           </footer>
         </div>
       </div>
+      </ProfileHeader>
     </div>
   )
 }
