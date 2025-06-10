@@ -153,7 +153,7 @@ export default function EditProfilePage() {
           <div className="photo-upload">
             <div className="photo-preview">
               {photoPreview ? (
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={photoPreview} alt="Profile" />
               ) : (
                 <div className="photo-placeholder">
