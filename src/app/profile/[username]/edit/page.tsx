@@ -99,7 +99,7 @@ export default function EditProfilePage({ params }: { params: { username: string
         socialLinks: profile?.socialLinks || []
       }
 
-      const response = await fetch(`/api/profile/${profile?.id}`, {
+      const response = await fetch(`/api/profile/id/${profile?.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileData)
