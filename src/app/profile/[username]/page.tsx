@@ -27,7 +27,7 @@ async function getProfile(username: string): Promise<AcademicProfile | null> {
     
     // Fallback to demo profile for development
     if (username === 'john-doe') {
-    return {
+      return {
       id: '1',
       username: 'john-doe',
       firstName: 'John',
@@ -155,10 +155,11 @@ async function getProfile(username: string): Promise<AcademicProfile | null> {
       updatedAt: new Date('2024-12-01'),
       publishedAt: new Date('2024-01-15'),
     }
-  }
+    }
 
-  // Return null if profile not found
-  return null
+    // Return null if profile not found
+    return null
+  }
 }
 
 export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
