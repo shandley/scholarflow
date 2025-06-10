@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #2F3437;
+    
+    /* Academic color system */
+    --sage-green: #8FA68E;
+    --warm-beige: #F5F2E8;
+    --soft-blue: #6B8CAE;
+    --charcoal: #2F3437;
+    --light-gray: #F8F9FA;
+    
+    /* Metric colors */
+    --citation-orange: #E67E22;
+    --collaboration-blue: #3498DB;
+    --grant-gold: #F39C12;
+    --publication-green: #27AE60;
+    --teaching-purple: #9B59B6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #1a1a1a;
+      --foreground: #F8F9FA;
+    }
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Card component styling */
+  .card {
+    @apply bg-white rounded-xl shadow-soft hover:shadow-medium transition-shadow duration-200 p-6;
+  }
+  
+  .card-compact {
+    @apply bg-white rounded-lg shadow-soft hover:shadow-medium transition-shadow duration-200 p-4;
+  }
+  
+  /* Button base styling */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply btn bg-sage-green text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-sage-green focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-soft-blue text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-soft-blue focus:ring-offset-2;
+  }
+  
+  .btn-outline {
+    @apply btn border-2 border-charcoal text-charcoal hover:bg-charcoal hover:text-white;
+  }
+  
+  /* Academic metric badges */
+  .metric-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  /* Academic activity colors */
+  .activity-writing {
+    @apply bg-publication-green bg-opacity-20 text-publication-green;
+  }
+  
+  .activity-research {
+    @apply bg-soft-blue bg-opacity-20 text-soft-blue;
+  }
+  
+  .activity-teaching {
+    @apply bg-teaching-purple bg-opacity-20 text-teaching-purple;
+  }
+  
+  .activity-collaboration {
+    @apply bg-collaboration-blue bg-opacity-20 text-collaboration-blue;
+  }
+  
+  /* Form elements */
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-green focus:border-transparent;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-charcoal mb-1;
+  }
+  
+  /* Loading states */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+  
+  /* Academic stats */
+  .stat-card {
+    @apply card-compact text-center;
+  }
+  
+  .stat-value {
+    @apply text-3xl font-bold text-charcoal;
+  }
+  
+  .stat-label {
+    @apply text-sm text-gray-600 mt-1;
+  }
+}
+
+@layer utilities {
+  /* Custom text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Animations */
+  .animate-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+}
