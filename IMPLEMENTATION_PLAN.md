@@ -3,9 +3,11 @@
 ## Sprint Planning & Milestones
 
 ### Sprint 1 (Weeks 1-2): Foundation Setup ✅ COMPLETED
+
 **Goal**: Establish development environment and core infrastructure
 
 #### Technical Tasks ✅ COMPLETED
+
 - [x] Initialize Next.js 14 project with TypeScript
   - Configure `tsconfig.json` for strict mode
   - Set up path aliases for clean imports
@@ -30,21 +32,25 @@
   - Call-to-action sections
 
 #### Deliverables ✅ COMPLETED
+
 - ✅ Working Next.js app deployed to Vercel at https://scholarflow-g2t4.vercel.app
 - ✅ Pure CSS design system with academic color scheme
 - ✅ Development workflow established
 - ✅ Professional landing page with three-tier showcase
 
 #### Lessons Learned
+
 - **CSS Strategy**: Pure CSS approach eliminated build configuration issues
 - **Deployment**: Vercel Git integration can get stuck; disconnect/reconnect resolves issues
 - **Design System**: CSS custom properties work well for academic color schemes
 - **Performance**: No CSS framework dependencies = faster builds and deployment
 
 ### Sprint 2 (Weeks 3-4): Tier 1 MVP - Academic CV ✅ COMPLETED
+
 **Goal**: Launch basic academic profile functionality
 
 #### Technical Tasks ✅ COMPLETED
+
 - [x] Design profile data schema
   ```typescript
   interface AcademicProfile {
@@ -79,6 +85,7 @@
   - SEO optimization with metadata
 
 #### Deliverables ✅ COMPLETED
+
 - ✅ Working ORCID OAuth integration with NextAuth.js
 - ✅ 4 responsive profile templates with different layouts
 - ✅ Demo profile page at /profile/john-doe
@@ -86,9 +93,11 @@
 - ✅ Publication import from ORCID with real-time display
 
 ### Sprint 3 (Weeks 5-6): Data Persistence & User Management ✅ COMPLETED
+
 **Goal**: Add database layer and user accounts
 
 #### Technical Tasks ✅ COMPLETED
+
 - [x] Database setup with Prisma ORM
   - Complete PostgreSQL schema design
   - Migration system with Prisma
@@ -109,6 +118,7 @@
   - Database file tracking
 
 #### Database Schema
+
 ```sql
 -- Core tables
 users
@@ -123,6 +133,7 @@ profile_publications
 ```
 
 #### Deliverables ✅ COMPLETED
+
 - ✅ Prisma ORM integration with full schema
 - ✅ NextAuth database adapter for user accounts
 - ✅ Profile creation API with ORCID data persistence
@@ -131,9 +142,11 @@ profile_publications
 - ✅ Docker Compose for local PostgreSQL development
 
 ### Sprint 4 (Weeks 7-8): Tier 2 Features - Productivity Dashboard
+
 **Goal**: Implement activity tracking and visualization
 
 #### Technical Tasks
+
 - [ ] Activity tracking data model
   - Research sessions
   - Writing time
@@ -156,15 +169,18 @@ profile_publications
   - Co-author network
 
 #### Deliverables
+
 - Activity tracking dashboard
 - Research heatmap visualization
 - Goal progress indicators
 - Basic analytics reports
 
 ### Sprint 5 (Weeks 9-10): Networking & Collaboration
+
 **Goal**: Build academic networking features
 
 #### Technical Tasks
+
 - [ ] Relationship data model
   - Mentor/mentee connections
   - Collaborations
@@ -187,15 +203,18 @@ profile_publications
   - Contact exchange
 
 #### Deliverables
+
 - Academic relationship management
 - Network visualization dashboard
 - QR code conference features
 - Collaboration tracking
 
 ### Sprint 6 (Weeks 11-12): Tier 3 & Production Readiness
+
 **Goal**: Complete advanced features and prepare for launch
 
 #### Technical Tasks
+
 - [ ] Academic family tree
   - Multi-generational tracking
   - Tree visualization (D3.js)
@@ -218,6 +237,7 @@ profile_publications
   - Penetration testing
 
 #### Deliverables
+
 - Complete feature set
 - Performance benchmarks met
 - Security audit passed
@@ -226,6 +246,7 @@ profile_publications
 ## Technical Architecture Details
 
 ### API Route Structure
+
 ```
 /api/auth/[...nextauth].ts
 /api/profile/
@@ -246,6 +267,7 @@ profile_publications
 ```
 
 ### Component Structure
+
 ```
 components/
   common/
@@ -267,6 +289,7 @@ components/
 ```
 
 ### State Management Strategy
+
 ```typescript
 // Zustand stores
 useAuthStore - Authentication state
@@ -284,18 +307,21 @@ useAnalytics() - Fetch analytics
 ## Testing Strategy
 
 ### Unit Testing
+
 - Components: React Testing Library
 - API routes: Jest + MSW
 - Utilities: Jest
 - Coverage target: 80%
 
 ### Integration Testing
+
 - API workflows: Supertest
 - Database operations: Prisma mock
 - Authentication flows: Cypress
 - File uploads: Playwright
 
 ### E2E Testing
+
 - User journeys: Cypress
 - Cross-browser: BrowserStack
 - Performance: Lighthouse CI
@@ -304,6 +330,7 @@ useAnalytics() - Fetch analytics
 ## Deployment Pipeline
 
 ### CI/CD with GitHub Actions
+
 ```yaml
 name: Deploy to Vercel
 on:
@@ -318,7 +345,7 @@ jobs:
     - npm run lint
     - npm run test
     - npm run build
-    
+
   deploy:
     - Vercel deployment
     - Run Lighthouse CI
@@ -326,6 +353,7 @@ jobs:
 ```
 
 ### Environment Management
+
 - Development: Local .env.local
 - Preview: Vercel preview env
 - Staging: staging branch
@@ -334,18 +362,21 @@ jobs:
 ## Launch Strategy
 
 ### Beta Launch (Month 3)
+
 - 50 invited academics
 - Feedback collection
 - Bug fixes and iterations
 - Performance monitoring
 
 ### Public Launch (Month 4)
+
 - ProductHunt launch
 - Academic Twitter campaign
 - University newsletters
 - Conference presentations
 
 ### Growth Targets
+
 - Month 1: 100 users
 - Month 3: 500 users
 - Month 6: 2,000 users
@@ -354,12 +385,15 @@ jobs:
 ## Risk Mitigation
 
 ### Technical Risks
+
 1. **API Rate Limits**
+
    - Implement caching layer
    - Queue system for batch operations
    - Fallback to manual entry
 
 2. **Scaling Issues**
+
    - Database connection pooling
    - CDN for static assets
    - Serverless function optimization
@@ -370,7 +404,9 @@ jobs:
    - Version history
 
 ### Business Risks
+
 1. **Low Adoption**
+
    - Free tier generous enough
    - Easy onboarding
    - Clear value proposition

@@ -3,6 +3,7 @@
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ and npm 9+
 - Git
 - PostgreSQL 14+ (or Docker)
@@ -12,22 +13,26 @@
 ### Initial Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/scholarflow/scholarflow.git
 cd scholarflow
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**
+
 ```bash
 cp .env.example .env.local
 ```
 
 Edit `.env.local` with your values:
+
 ```env
 # Database
 DATABASE_URL="postgresql://user:password@localhost:5432/scholarflow"
@@ -53,6 +58,7 @@ VERCEL_URL="https://your-app.vercel.app"
 ```
 
 4. **Set up the database**
+
 ```bash
 # Using Docker
 docker-compose up -d postgres
@@ -65,11 +71,13 @@ npx prisma migrate dev
 ```
 
 5. **Seed the database (optional)**
+
 ```bash
 npm run db:seed
 ```
 
 6. **Start the development server**
+
 ```bash
 npm run dev
 ```
@@ -124,22 +132,26 @@ npm run type-check
 ### Git Workflow
 
 1. **Create a feature branch**
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
 2. **Make your changes**
+
 - Write code
 - Add tests
 - Update documentation
 
 3. **Commit with conventional commits**
+
 ```bash
 git add .
 git commit -m "feat: add profile export functionality"
 ```
 
 Commit types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation
@@ -149,6 +161,7 @@ Commit types:
 - `chore`: Build/tooling changes
 
 4. **Push and create PR**
+
 ```bash
 git push origin feature/your-feature-name
 ```
@@ -172,6 +185,7 @@ npm run test:coverage
 #### Writing Tests
 
 **Component Test Example**:
+
 ```typescript
 // components/profile/ProfileCard.test.tsx
 import { render, screen } from '@testing-library/react'
@@ -184,9 +198,9 @@ describe('ProfileCard', () => {
       position: 'Assistant Professor',
       institution: 'MIT'
     }
-    
+
     render(<ProfileCard profile={profile} />)
-    
+
     expect(screen.getByText('Dr. Jane Smith')).toBeInTheDocument()
     expect(screen.getByText('Assistant Professor')).toBeInTheDocument()
     expect(screen.getByText('MIT')).toBeInTheDocument()
@@ -195,26 +209,27 @@ describe('ProfileCard', () => {
 ```
 
 **API Route Test Example**:
+
 ```typescript
 // app/api/profiles/route.test.ts
-import { createMocks } from 'node-mocks-http'
-import handler from './route'
+import { createMocks } from 'node-mocks-http';
+import handler from './route';
 
 describe('/api/profiles', () => {
   it('returns profiles list', async () => {
     const { req, res } = createMocks({
       method: 'GET',
-      query: { page: '1', limit: '10' }
-    })
-    
-    await handler(req, res)
-    
-    expect(res._getStatusCode()).toBe(200)
-    const json = JSON.parse(res._getData())
-    expect(json.profiles).toBeDefined()
-    expect(json.pagination).toBeDefined()
-  })
-})
+      query: { page: '1', limit: '10' },
+    });
+
+    await handler(req, res);
+
+    expect(res._getStatusCode()).toBe(200);
+    const json = JSON.parse(res._getData());
+    expect(json.profiles).toBeDefined();
+    expect(json.pagination).toBeDefined();
+  });
+});
 ```
 
 ## Key Development Areas
@@ -223,9 +238,9 @@ describe('/api/profiles', () => {
 
 ```typescript
 // lib/auth/config.ts
-import NextAuth from 'next-auth'
-import ORCIDProvider from 'next-auth/providers/orcid'
-import GitHubProvider from 'next-auth/providers/github'
+import NextAuth from 'next-auth';
+import ORCIDProvider from 'next-auth/providers/orcid';
+import GitHubProvider from 'next-auth/providers/github';
 
 export const authOptions = {
   providers: [
@@ -236,22 +251,22 @@ export const authOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    })
+    }),
   ],
   callbacks: {
     async session({ session, token }) {
       // Add custom fields to session
-      return session
-    }
-  }
-}
+      return session;
+    },
+  },
+};
 ```
 
 ### 2. Database Operations (Prisma)
 
 ```typescript
 // lib/db/profiles.ts
-import { prisma } from '@/lib/db'
+import { prisma } from '@/lib/db';
 
 export async function getProfile(username: string) {
   return prisma.profile.findUnique({
@@ -259,11 +274,11 @@ export async function getProfile(username: string) {
     include: {
       publications: {
         take: 10,
-        orderBy: { publicationYear: 'desc' }
+        orderBy: { publicationYear: 'desc' },
       },
-      socialLinks: true
-    }
-  })
+      socialLinks: true,
+    },
+  });
 }
 
 export async function updateProfile(id: string, data: ProfileUpdate) {
@@ -271,9 +286,9 @@ export async function updateProfile(id: string, data: ProfileUpdate) {
     where: { id },
     data: {
       ...data,
-      updatedAt: new Date()
-    }
-  })
+      updatedAt: new Date(),
+    },
+  });
 }
 ```
 
@@ -282,23 +297,20 @@ export async function updateProfile(id: string, data: ProfileUpdate) {
 ```typescript
 // lib/api/orcid.ts
 export class ORCIDClient {
-  private baseURL = 'https://pub.orcid.org/v3.0'
-  
+  private baseURL = 'https://pub.orcid.org/v3.0';
+
   async getPublications(orcid: string) {
-    const response = await fetch(
-      `${this.baseURL}/${orcid}/works`,
-      {
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
-    )
-    
+    const response = await fetch(`${this.baseURL}/${orcid}/works`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
     if (!response.ok) {
-      throw new Error('Failed to fetch ORCID data')
+      throw new Error('Failed to fetch ORCID data');
     }
-    
-    return response.json()
+
+    return response.json();
   }
 }
 ```
@@ -317,16 +329,16 @@ interface PublicationListProps {
   editable?: boolean
 }
 
-export function PublicationList({ 
-  publications, 
-  editable = false 
+export function PublicationList({
+  publications,
+  editable = false
 }: PublicationListProps) {
   const [filter, setFilter] = useState<string>('')
-  
+
   const filtered = publications.filter(pub =>
     pub.title.toLowerCase().includes(filter.toLowerCase())
   )
-  
+
   return (
     <div className="space-y-4">
       <input
@@ -336,11 +348,11 @@ export function PublicationList({
         onChange={(e) => setFilter(e.target.value)}
         className="w-full px-4 py-2 border rounded-lg"
       />
-      
+
       <div className="divide-y">
         {filtered.map((pub) => (
-          <PublicationCard 
-            key={pub.id} 
+          <PublicationCard
+            key={pub.id}
             publication={pub}
             editable={editable}
           />
@@ -355,34 +367,35 @@ export function PublicationList({
 
 ```typescript
 // app/actions/profile.ts
-'use server'
+'use server';
 
-import { revalidatePath } from 'next/cache'
-import { auth } from '@/lib/auth'
-import { updateProfile } from '@/lib/db/profiles'
+import { revalidatePath } from 'next/cache';
+import { auth } from '@/lib/auth';
+import { updateProfile } from '@/lib/db/profiles';
 
 export async function updateProfileAction(
-  profileId: string, 
+  profileId: string,
   data: ProfileUpdate
 ) {
-  const session = await auth()
-  
+  const session = await auth();
+
   if (!session?.user) {
-    throw new Error('Unauthorized')
+    throw new Error('Unauthorized');
   }
-  
-  const updated = await updateProfile(profileId, data)
-  
+
+  const updated = await updateProfile(profileId, data);
+
   // Revalidate the profile page
-  revalidatePath(`/profile/${updated.username}`)
-  
-  return updated
+  revalidatePath(`/profile/${updated.username}`);
+
+  return updated;
 }
 ```
 
 ## Performance Optimization
 
 ### 1. Image Optimization
+
 ```typescript
 import Image from 'next/image'
 
@@ -398,6 +411,7 @@ import Image from 'next/image'
 ```
 
 ### 2. Data Fetching
+
 ```typescript
 // Use React Suspense for better UX
 import { Suspense } from 'react'
@@ -412,28 +426,24 @@ export default function ProfilePage() {
 ```
 
 ### 3. Caching Strategy
+
 ```typescript
 // Implement stale-while-revalidate
 export async function getPublications(orcid: string) {
-  const cached = await redis.get(`publications:${orcid}`)
-  
+  const cached = await redis.get(`publications:${orcid}`);
+
   if (cached) {
     // Return cached data immediately
-    return JSON.parse(cached)
+    return JSON.parse(cached);
   }
-  
+
   // Fetch fresh data
-  const fresh = await orcidClient.getPublications(orcid)
-  
+  const fresh = await orcidClient.getPublications(orcid);
+
   // Cache for 24 hours
-  await redis.set(
-    `publications:${orcid}`, 
-    JSON.stringify(fresh),
-    'EX',
-    86400
-  )
-  
-  return fresh
+  await redis.set(`publications:${orcid}`, JSON.stringify(fresh), 'EX', 86400);
+
+  return fresh;
 }
 ```
 
@@ -442,16 +452,19 @@ export async function getPublications(orcid: string) {
 ### Vercel Deployment
 
 1. **Install Vercel CLI**
+
 ```bash
 npm i -g vercel
 ```
 
 2. **Deploy to preview**
+
 ```bash
 vercel
 ```
 
 3. **Deploy to production**
+
 ```bash
 vercel --prod
 ```
@@ -459,6 +472,7 @@ vercel --prod
 ### Environment Variables
 
 Set these in Vercel dashboard:
+
 - All variables from `.env.local`
 - `NODE_ENV=production`
 - Database connection string
@@ -477,54 +491,58 @@ npx prisma migrate deploy
 ## Monitoring & Debugging
 
 ### Logging
-```typescript
-import { logger } from '@/lib/logger'
 
-logger.info('Profile created', { 
+```typescript
+import { logger } from '@/lib/logger';
+
+logger.info('Profile created', {
   profileId: profile.id,
-  username: profile.username 
-})
+  username: profile.username,
+});
 
 logger.error('Failed to sync publications', {
   error: error.message,
-  orcid: profile.orcid
-})
+  orcid: profile.orcid,
+});
 ```
 
 ### Error Tracking (Sentry)
+
 ```typescript
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV,
-  tracesSampleRate: 0.1
-})
+  tracesSampleRate: 0.1,
+});
 ```
 
 ### Performance Monitoring
+
 ```typescript
 // Use Web Vitals
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 
 function sendToAnalytics(metric) {
   // Send to your analytics service
   analytics.track('web-vitals', {
     name: metric.name,
-    value: metric.value
-  })
+    value: metric.value,
+  });
 }
 
-getCLS(sendToAnalytics)
-getFID(sendToAnalytics)
-getFCP(sendToAnalytics)
-getLCP(sendToAnalytics)
-getTTFB(sendToAnalytics)
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getFCP(sendToAnalytics);
+getLCP(sendToAnalytics);
+getTTFB(sendToAnalytics);
 ```
 
 ## Common Tasks
 
 ### Adding a New Module
+
 1. Define the data model in `prisma/schema.prisma`
 2. Create migration: `npx prisma migrate dev`
 3. Add API routes in `app/api/`
@@ -534,6 +552,7 @@ getTTFB(sendToAnalytics)
 7. Update documentation
 
 ### Integrating a New OAuth Provider
+
 1. Add provider config to `lib/auth/config.ts`
 2. Set environment variables
 3. Update sign-in page UI
@@ -541,6 +560,7 @@ getTTFB(sendToAnalytics)
 5. Handle profile data mapping
 
 ### Adding a New Visualization
+
 1. Choose library (D3.js, Recharts, etc.)
 2. Create component in `components/visualizations/`
 3. Implement responsive design
@@ -553,6 +573,7 @@ getTTFB(sendToAnalytics)
 ### Common Issues
 
 **Database connection errors**
+
 ```bash
 # Check PostgreSQL is running
 docker-compose ps
@@ -562,6 +583,7 @@ npx prisma db pull
 ```
 
 **Build errors**
+
 ```bash
 # Clear cache
 rm -rf .next node_modules
@@ -570,6 +592,7 @@ npm run build
 ```
 
 **Type errors**
+
 ```bash
 # Regenerate Prisma types
 npx prisma generate

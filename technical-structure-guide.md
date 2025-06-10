@@ -11,6 +11,7 @@
 ## Core Architecture Decision: Vercel-First Platform
 
 ### Why Vercel is Perfect for This Use Case
+
 - **Zero-config deployment**: Connect GitHub repo and go live instantly
 - **Global edge network**: Academic profiles load fast worldwide for conferences
 - **Automatic serverless functions**: API routes become functions automatically
@@ -22,6 +23,7 @@
 ## Technical Stack - Vercel Optimized
 
 ### Frontend Foundation
+
 ```
 Next.js 14+ (Vercel's framework)
 ├── Static Site Generation (SSG) for lightning-fast academic profiles
@@ -32,16 +34,18 @@ Next.js 14+ (Vercel's framework)
 ```
 
 ### Backend Services (Vercel Serverless)
+
 ```
 Vercel Functions (Zero Configuration)
 ├── /api/orcid - Fetch publication data
-├── /api/scholar - Get citation metrics  
+├── /api/scholar - Get citation metrics
 ├── /api/auth - Handle user authentication
 ├── /api/networking - Manage academic connections
 └── /api/analytics - Track profile performance
 ```
 
 ### Data Architecture (Vercel Ecosystem)
+
 ```
 Vercel-Native Data Strategy:
 ├── Vercel KV (Redis) - Fast caching for API responses
@@ -54,15 +58,18 @@ Vercel-Native Data Strategy:
 ## Three-Tier Setup Strategy
 
 ### Tier 1: "Academic CV Website" (5-minute setup)
+
 **Target**: Faculty, postdocs who want a quick professional presence
 
 **Setup Process**:
+
 1. **Template Selection**: Choose from 3-4 pre-designed layouts
 2. **Basic Info Form**: Name, position, institution, photo, bio
 3. **ORCID Connection**: One-click import of publications
 4. **Deploy**: Automatic deployment to custom domain
 
 **Technical Implementation**:
+
 ```yaml
 # User fills out a simple form that generates:
 profile.yaml:
@@ -71,7 +78,7 @@ profile.yaml:
   institution: "Stanford University"
   orcid: "0000-0000-0000-0000"
   bio: "Computational biologist studying..."
-  
+
 # Site builds automatically with:
 - Responsive design
 - Publication list (auto-updated from ORCID)
@@ -82,15 +89,18 @@ profile.yaml:
 **Output**: Professional static website with auto-updating publications
 
 ### Tier 2: "Academic Dashboard" (15-minute setup)
+
 **Target**: Graduate students, early career researchers wanting productivity tracking
 
 **Added Features**:
+
 - Activity tracking modules
 - Goal setting and progress visualization
 - Basic collaboration network
 - Conference and grant tracking
 
 **Setup Process**:
+
 1. Start with Tier 1 website
 2. **Module Selection**: Choose relevant tracking modules
 3. **Data Import**: Upload CV, import Google Scholar data
@@ -98,26 +108,30 @@ profile.yaml:
 5. **Integration Setup**: Connect calendar, Google Scholar (optional)
 
 **Technical Implementation**:
+
 ```javascript
 // Progressive enhancement approach
 const modules = {
   publications: { enabled: true, source: 'orcid' },
   goals: { enabled: true, targets: ['papers', 'conferences'] },
   network: { enabled: false }, // Can enable later
-  legacy: { enabled: false }   // Faculty-only feature
-}
+  legacy: { enabled: false }, // Faculty-only feature
+};
 ```
 
 ### Tier 3: "Academic Legacy Platform" (30-minute setup)
+
 **Target**: Senior faculty, researchers with complex networks
 
 **Added Features**:
+
 - Complete mentorship tracking
 - Multi-generational academic family trees
 - Advanced analytics and legacy metrics
 - Institution integration capabilities
 
 **Setup Process**:
+
 1. Start with Tier 2 dashboard
 2. **Network Mapping**: Import and verify academic relationships
 3. **Legacy Configuration**: Set up trainee tracking
@@ -127,6 +141,7 @@ const modules = {
 ## Setup Flow: User Experience
 
 ### Initial Onboarding (Vercel-Powered)
+
 ```
 1. Welcome Screen
    ├── "I want a simple academic website" → Tier 1
@@ -172,11 +187,13 @@ const modules = {
 ```
 
 ### Progressive Enhancement
+
 Users can upgrade tiers at any time without losing data or starting over.
 
 ## Hosting & Deployment Strategy
 
 ### Primary Solution: Vercel Platform
+
 ```
 Core Benefits:
 ├── Zero-config deployments from GitHub
@@ -190,6 +207,7 @@ Core Benefits:
 ```
 
 ### Vercel-Specific Features for Academics
+
 ```
 Academic Workflow Integration:
 ├── Git-based updates (familiar to researchers)
@@ -202,11 +220,13 @@ Academic Workflow Integration:
 ```
 
 ### Alternative Options (Vercel-Compatible):
+
 - **Netlify**: Similar features, same Next.js codebase works
 - **GitHub Pages**: Limited but free option for basic sites
 - **Self-Hosting**: Docker containers for institutional deployment
 
 ### Institution Integration with Vercel:
+
 ```
 Enterprise Features:
 ├── Vercel Teams for department management
@@ -220,6 +240,7 @@ Enterprise Features:
 ## Data Management & Privacy
 
 ### Privacy-First Architecture
+
 ```
 Data Storage Tiers:
 ├── Public Data: Publications, basic profile (always visible)
@@ -229,6 +250,7 @@ Data Storage Tiers:
 ```
 
 ### Data Portability
+
 ```
 Export Options:
 ├── Academic CV (PDF/LaTeX)
@@ -240,6 +262,7 @@ Export Options:
 ### Revenue Model & Sustainability (Vercel-Aligned)
 
 #### Freemium Structure Optimized for Vercel Pricing
+
 ```
 Free Tier (Vercel Hobby Plan):
 ├── Tier 1 websites (unlimited personal academic sites)
@@ -271,6 +294,7 @@ Enterprise ($100/month per department):
 ```
 
 #### Cost Structure Benefits with Vercel
+
 ```
 Operational Advantages:
 ├── No server management costs
@@ -285,101 +309,114 @@ Operational Advantages:
 ## Technical Implementation Details
 
 ### Development Framework (Vercel-Optimized)
+
 ```javascript
 // Leveraging Vercel's Next.js optimizations
 const AcademicProfile = () => {
-  const { user, loading } = useAuth()
-  const { modules } = useUserModules()
-  
+  const { user, loading } = useAuth();
+  const { modules } = useUserModules();
+
   return (
     <Layout>
       <ProfileHeader user={user} />
-      {modules.map(module => (
+      {modules.map((module) => (
         <ModuleRenderer key={module.id} module={module} />
       ))}
     </Layout>
-  )
-}
+  );
+};
 
 // Vercel's ISR for auto-updating academic data
 export async function getStaticProps() {
-  const publications = await fetchORCIDData(user.orcid)
-  return { 
-    props: { publications }, 
-    revalidate: 86400 // Update daily automatically
-  }
+  const publications = await fetchORCIDData(user.orcid);
+  return {
+    props: { publications },
+    revalidate: 86400, // Update daily automatically
+  };
 }
 ```
 
 ### Vercel API Routes (Zero-Config Backend)
+
 ```typescript
 // pages/api/publications/[orcid].ts - Automatically becomes serverless function
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { orcid } = req.query
-  
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { orcid } = req.query;
+
   try {
-    const publications = await fetchORCIDData(orcid as string)
+    const publications = await fetchORCIDData(orcid as string);
     // Vercel KV for caching
-    await kv.set(`publications:${orcid}`, publications, { ex: 86400 })
-    res.json(publications)
+    await kv.set(`publications:${orcid}`, publications, { ex: 86400 });
+    res.json(publications);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch publications' })
+    res.status(500).json({ error: 'Failed to fetch publications' });
   }
 }
 
 // pages/api/networking/connect.ts - Academic relationship management
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { fromUser, toUser, relationship } = req.body
-  
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { fromUser, toUser, relationship } = req.body;
+
   // Store in Vercel Postgres
   const connection = await sql`
     INSERT INTO academic_connections (from_user, to_user, relationship_type, created_at)
     VALUES (${fromUser}, ${toUser}, ${relationship}, NOW())
     RETURNING *
-  `
-  
-  res.json(connection)
+  `;
+
+  res.json(connection);
 }
 ```
 
 ### Vercel Edge Functions for Global Performance
+
 ```typescript
 // middleware.ts - Runs globally at the edge
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   // Add academic-specific headers
-  const response = NextResponse.next()
-  
+  const response = NextResponse.next();
+
   // Cache academic profiles aggressively
   if (request.nextUrl.pathname.startsWith('/profile/')) {
-    response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400')
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=3600, stale-while-revalidate=86400'
+    );
   }
-  
+
   // Handle conference networking QR codes
   if (request.nextUrl.pathname.startsWith('/qr/')) {
-    response.headers.set('X-Academic-Networking', 'enabled')
+    response.headers.set('X-Academic-Networking', 'enabled');
   }
-  
-  return response
+
+  return response;
 }
 ```
 
 ## Setup Automation & Templates
 
 ### Smart Template System
+
 ```yaml
 templates:
   minimal_faculty:
     modules: [profile, publications, contact]
     design: clean
     complexity: 1
-    
+
   productive_student:
     modules: [profile, goals, activity, publications]
     design: dashboard
     complexity: 2
-    
+
   legacy_professor:
     modules: [profile, publications, mentorship, network, legacy]
     design: comprehensive
@@ -387,6 +424,7 @@ templates:
 ```
 
 ### Automated Setup Scripts (ScholarFlow CLI)
+
 ```bash
 # One-command academic profile creation
 npx create-scholarflow --template=faculty --domain=myname.com
@@ -421,6 +459,7 @@ vercel --prod --confirm
 ```
 
 ### ScholarFlow Project Templates
+
 ```yaml
 # vercel.json configuration for ScholarFlow profiles
 {
@@ -457,12 +496,12 @@ scholarflow_templates:
     modules: [profile, publications, contact]
     vercel_config: optimized_static
     build_time: "< 30 seconds"
-    
+
   productive_student:
     modules: [profile, goals, activity, publications]
     vercel_config: hybrid_static_dynamic
     build_time: "< 45 seconds"
-    
+
   legacy_professor:
     modules: [profile, publications, mentorship, network, legacy]
     vercel_config: full_dynamic_features
@@ -472,6 +511,7 @@ scholarflow_templates:
 ## Success Metrics & Monitoring
 
 ### Platform Health Metrics
+
 - Setup completion rates by tier
 - Time to first successful deployment
 - User retention by academic role
@@ -479,6 +519,7 @@ scholarflow_templates:
 - Performance metrics (load times, uptime)
 
 ### User Success Metrics
+
 - Profile completeness scores
 - Academic goal achievement rates
 - Network growth and engagement
@@ -488,6 +529,7 @@ scholarflow_templates:
 ## Migration & Integration Strategy
 
 ### Existing Website Migration
+
 ```
 Migration Tools:
 ├── CV import from PDF/Word documents
@@ -498,6 +540,7 @@ Migration Tools:
 ```
 
 ### Institution Integration
+
 ```
 Enterprise Features:
 ├── Single Sign-On (SSO) integration
@@ -510,6 +553,7 @@ Enterprise Features:
 ## Implementation Timeline
 
 ### Phase 1 (Months 1-3): Vercel Foundation & MVP
+
 - **Core Infrastructure**: Next.js 14+ with Vercel deployment pipeline
 - **Authentication**: NextAuth.js with ORCID, GitHub, Google providers
 - **Tier 1 Functionality**: Static academic websites with auto-deployment
@@ -519,6 +563,7 @@ Enterprise Features:
 - **Domain Management**: Custom domain setup with Vercel's domain service
 
 ### Phase 2 (Months 4-6): Dynamic Features & API Integration
+
 - **Tier 2 Functionality**: Productivity tracking and goal visualization
 - **Vercel Functions**: Academic API integrations (Google Scholar, CrossRef)
 - **Vercel KV**: Fast caching for publication and citation data
@@ -527,7 +572,8 @@ Enterprise Features:
 - **Mobile PWA**: Conference networking features with QR codes
 - **Enhanced Templates**: Role-specific designs (student, faculty, staff)
 
-### Phase 3 (Months 7-9): Network & Advanced Features  
+### Phase 3 (Months 7-9): Network & Advanced Features
+
 - **Tier 3 Functionality**: Academic relationship and legacy tracking
 - **Vercel Postgres**: Complex data relationships and networking features
 - **Vercel Blob**: File storage for CVs, photos, presentations
@@ -537,6 +583,7 @@ Enterprise Features:
 - **Advanced Customization**: CSS overrides and custom components
 
 ### Phase 4 (Months 10-12): Enterprise & Scale
+
 - **Vercel Enterprise**: SSO, advanced security, team management
 - **Institution Pilots**: University-wide deployment programs
 - **Advanced Integrations**: LMS, HRIS, grant management systems

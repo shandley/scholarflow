@@ -1,91 +1,91 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { ProfileData } from '@/types/profile'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { ProfileData } from '@/types/profile';
 
 export default function EditProfilePage() {
-  const router = useRouter()
-  const { status } = useSession()
-  const [profile, setProfile] = useState<ProfileData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [photoFile, setPhotoFile] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState<string>('')
+  const router = useRouter();
+  const { status } = useSession();
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>('');
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch('/api/profile')
+        const response = await fetch('/api/profile');
         if (response.ok) {
-          const data = await response.json()
-          setProfile(data)
+          const data = await response.json();
+          setProfile(data);
           if (data.profilePhoto) {
-            setPhotoPreview(data.profilePhoto)
+            setPhotoPreview(data.profilePhoto);
           }
         } else {
-          setError('Failed to load profile')
+          setError('Failed to load profile');
         }
       } catch {
-        setError('Error loading profile')
+        setError('Error loading profile');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
     if (status === 'authenticated') {
-      fetchProfile()
+      fetchProfile();
     } else if (status === 'unauthenticated') {
-      router.push('/auth/signin')
+      router.push('/auth/signin');
     }
-  }, [status, router])
+  }, [status, router]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setError('Photo must be less than 5MB')
-        return
+        setError('Photo must be less than 5MB');
+        return;
       }
-      setPhotoFile(file)
-      const reader = new FileReader()
+      setPhotoFile(file);
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setPhotoPreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-      setError('')
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setError('');
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSaving(true)
-    setError('')
+    e.preventDefault();
+    setSaving(true);
+    setError('');
 
     try {
       // Upload photo if changed
-      let photoUrl = profile?.profilePhoto
+      let photoUrl = profile?.profilePhoto;
       if (photoFile) {
-        const formData = new FormData()
-        formData.append('file', photoFile)
-        formData.append('type', 'PROFILE_PHOTO')
-        
+        const formData = new FormData();
+        formData.append('file', photoFile);
+        formData.append('type', 'PROFILE_PHOTO');
+
         const uploadResponse = await fetch('/api/upload', {
           method: 'POST',
-          body: formData
-        })
-        
+          body: formData,
+        });
+
         if (uploadResponse.ok) {
-          const { url } = await uploadResponse.json()
-          photoUrl = url
+          const { url } = await uploadResponse.json();
+          photoUrl = url;
         }
       }
 
       // Update profile
-      const formData = new FormData(e.currentTarget)
+      const formData = new FormData(e.currentTarget);
       const profileData = {
         firstName: formData.get('firstName') as string,
         lastName: formData.get('lastName') as string,
@@ -96,34 +96,34 @@ export default function EditProfilePage() {
         location: formData.get('location') as string,
         website: formData.get('website') as string,
         profilePhoto: photoUrl,
-        socialLinks: profile?.socialLinks || []
-      }
+        socialLinks: profile?.socialLinks || [],
+      };
 
       const response = await fetch(`/api/profile/id/${profile?.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData)
-      })
+        body: JSON.stringify(profileData),
+      });
 
       if (response.ok) {
-        router.push(`/profile/${profile?.username}`)
+        router.push(`/profile/${profile?.username}`);
       } else {
-        const data = await response.json()
-        setError(data.error || 'Failed to update profile')
+        const data = await response.json();
+        setError(data.error || 'Failed to update profile');
       }
     } catch {
-      setError('Error updating profile')
+      setError('Error updating profile');
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="container">
         <div className="loading-spinner">Loading profile...</div>
       </div>
-    )
+    );
   }
 
   if (!profile) {
@@ -131,21 +131,22 @@ export default function EditProfilePage() {
       <div className="container">
         <div className="error-message">Profile not found</div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="container">
       <div className="page-header">
         <h1>Edit Profile</h1>
-        <Link href={`/profile/${profile.username}`} className="btn btn-secondary">
+        <Link
+          href={`/profile/${profile.username}`}
+          className="btn btn-secondary"
+        >
           Cancel
         </Link>
       </div>
 
-      {error && (
-        <div className="error-message">{error}</div>
-      )}
+      {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit} className="profile-form">
         <div className="form-section">
@@ -281,18 +282,17 @@ export default function EditProfilePage() {
         </div>
 
         <div className="form-actions">
-          <button
-            type="submit"
-            disabled={saving}
-            className="btn btn-primary"
-          >
+          <button type="submit" disabled={saving} className="btn btn-primary">
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
-          <Link href={`/profile/${profile.username}`} className="btn btn-secondary">
+          <Link
+            href={`/profile/${profile.username}`}
+            className="btn btn-secondary"
+          >
             Cancel
           </Link>
         </div>
       </form>
     </div>
-  )
+  );
 }

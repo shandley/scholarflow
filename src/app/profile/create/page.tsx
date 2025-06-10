@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { useSession } from 'next-auth/react'
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { createOrcidClient } from '@/lib/orcid'
-import type { ProfileFormData, Publication } from '@/types/profile'
+import { useSession } from 'next-auth/react';
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { createOrcidClient } from '@/lib/orcid';
+import type { ProfileFormData, Publication } from '@/types/profile';
 
 export default function CreateProfile() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [importingOrcid, setImportingOrcid] = useState(false)
-  const [publications, setPublications] = useState<Publication[]>([])
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [importingOrcid, setImportingOrcid] = useState(false);
+  const [publications, setPublications] = useState<Publication[]>([]);
   const [formData, setFormData] = useState<ProfileFormData>({
     firstName: '',
     lastName: '',
@@ -23,56 +23,60 @@ export default function CreateProfile() {
     website: '',
     template: 'minimal',
     visibility: 'public',
-  })
+  });
 
   const importOrcidData = useCallback(async () => {
-    if (!session?.user.orcidId || !session?.user.accessToken) return
+    if (!session?.user.orcidId || !session?.user.accessToken) return;
 
-    setImportingOrcid(true)
+    setImportingOrcid(true);
     try {
-      const orcidClient = createOrcidClient(session.user.accessToken)
-      const works = await orcidClient.fetchWorks(session.user.orcidId)
-      setPublications(works)
+      const orcidClient = createOrcidClient(session.user.accessToken);
+      const works = await orcidClient.fetchWorks(session.user.orcidId);
+      setPublications(works);
     } catch (error) {
-      console.error('Error importing ORCID data:', error)
+      console.error('Error importing ORCID data:', error);
     } finally {
-      setImportingOrcid(false)
+      setImportingOrcid(false);
     }
-  }, [session])
+  }, [session]);
 
   useEffect(() => {
-    if (status === 'loading') return
+    if (status === 'loading') return;
 
     if (!session) {
-      router.push('/auth/signin')
-      return
+      router.push('/auth/signin');
+      return;
     }
 
     // Pre-fill form with session data
     if (session.user) {
-      const nameParts = session.user.name?.split(' ') || []
-      setFormData(prev => ({
+      const nameParts = session.user.name?.split(' ') || [];
+      setFormData((prev) => ({
         ...prev,
         firstName: nameParts[0] || '',
         lastName: nameParts.slice(1).join(' ') || '',
         email: session.user.email || '',
-      }))
+      }));
 
       // Auto-import ORCID data if available
       if (session.user.orcidId && session.user.accessToken) {
-        importOrcidData()
+        importOrcidData();
       }
     }
-  }, [session, status, router, importOrcidData])
+  }, [session, status, router, importOrcidData]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
       // Prepare the profile data
@@ -81,7 +85,7 @@ export default function CreateProfile() {
         orcidId: session?.user.orcidId,
         publications: publications,
         socialLinks: [],
-      }
+      };
 
       // Save the profile to database
       const response = await fetch('/api/profile', {
@@ -90,41 +94,45 @@ export default function CreateProfile() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(profileData),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to create profile')
+        throw new Error(result.error || 'Failed to create profile');
       }
-      
+
       // Redirect to the new profile
-      router.push(`/profile/${result.profile.username}`)
+      router.push(`/profile/${result.profile.username}`);
     } catch (error) {
-      console.error('Error creating profile:', error)
-      alert(error instanceof Error ? error.message : 'Failed to create profile. Please try again.')
+      console.error('Error creating profile:', error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'Failed to create profile. Please try again.'
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-warm-beige flex items-center justify-center">
+      <div className="bg-warm-beige flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-sage-green border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="border-sage-green mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen bg-warm-beige">
+    <div className="bg-warm-beige min-h-screen">
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-charcoal mb-4">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-8 text-center">
+            <h1 className="text-charcoal mb-4 text-3xl font-bold">
               Create Your Academic Profile
             </h1>
             <p className="text-gray-600">
@@ -135,11 +143,16 @@ export default function CreateProfile() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <div className="card">
-              <h2 className="text-xl font-semibold text-charcoal mb-6">Basic Information</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-charcoal mb-6 text-xl font-semibold">
+                Basic Information
+              </h2>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="firstName"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     First Name *
                   </label>
                   <input
@@ -149,12 +162,15 @@ export default function CreateProfile() {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="lastName"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     Last Name *
                   </label>
                   <input
@@ -164,13 +180,16 @@ export default function CreateProfile() {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   />
                 </div>
               </div>
 
               <div className="mt-6">
-                <label htmlFor="email" className="block text-sm font-medium text-charcoal mb-2">
+                <label
+                  htmlFor="email"
+                  className="text-charcoal mb-2 block text-sm font-medium"
+                >
                   Email Address *
                 </label>
                 <input
@@ -180,12 +199,15 @@ export default function CreateProfile() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                  className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                 />
               </div>
 
               <div className="mt-6">
-                <label htmlFor="bio" className="block text-sm font-medium text-charcoal mb-2">
+                <label
+                  htmlFor="bio"
+                  className="text-charcoal mb-2 block text-sm font-medium"
+                >
                   Professional Bio
                 </label>
                 <textarea
@@ -195,18 +217,23 @@ export default function CreateProfile() {
                   onChange={handleInputChange}
                   rows={4}
                   placeholder="Tell us about your research interests, expertise, and academic background..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                  className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                 />
               </div>
             </div>
 
             {/* Current Position */}
             <div className="card">
-              <h2 className="text-xl font-semibold text-charcoal mb-6">Current Position</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-charcoal mb-6 text-xl font-semibold">
+                Current Position
+              </h2>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label htmlFor="currentPosition" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="currentPosition"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     Position/Title
                   </label>
                   <input
@@ -216,12 +243,15 @@ export default function CreateProfile() {
                     value={formData.currentPosition}
                     onChange={handleInputChange}
                     placeholder="e.g., Assistant Professor, PhD Student"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="currentInstitution" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="currentInstitution"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     Institution
                   </label>
                   <input
@@ -231,13 +261,16 @@ export default function CreateProfile() {
                     value={formData.currentInstitution}
                     onChange={handleInputChange}
                     placeholder="e.g., University of Example"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   />
                 </div>
               </div>
 
               <div className="mt-6">
-                <label htmlFor="currentDepartment" className="block text-sm font-medium text-charcoal mb-2">
+                <label
+                  htmlFor="currentDepartment"
+                  className="text-charcoal mb-2 block text-sm font-medium"
+                >
                   Department/School
                 </label>
                 <input
@@ -247,12 +280,15 @@ export default function CreateProfile() {
                   value={formData.currentDepartment}
                   onChange={handleInputChange}
                   placeholder="e.g., Computer Science, Biology"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                  className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                 />
               </div>
 
               <div className="mt-6">
-                <label htmlFor="website" className="block text-sm font-medium text-charcoal mb-2">
+                <label
+                  htmlFor="website"
+                  className="text-charcoal mb-2 block text-sm font-medium"
+                >
                   Personal Website
                 </label>
                 <input
@@ -262,7 +298,7 @@ export default function CreateProfile() {
                   value={formData.website}
                   onChange={handleInputChange}
                   placeholder="https://your-website.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                  className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                 />
               </div>
             </div>
@@ -270,13 +306,15 @@ export default function CreateProfile() {
             {/* ORCID Data Import */}
             {session?.user.orcidId && (
               <div className="card">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-charcoal">Publications from ORCID</h2>
+                <div className="mb-6 flex items-center justify-between">
+                  <h2 className="text-charcoal text-xl font-semibold">
+                    Publications from ORCID
+                  </h2>
                   <button
                     type="button"
                     onClick={importOrcidData}
                     disabled={importingOrcid}
-                    className="btn-primary text-sm py-2 px-4"
+                    className="btn-primary px-4 py-2 text-sm"
                   >
                     {importingOrcid ? 'Importing...' : 'Refresh'}
                   </button>
@@ -284,29 +322,39 @@ export default function CreateProfile() {
 
                 {publications.length > 0 ? (
                   <div className="space-y-4">
-                    <p className="text-sm text-gray-600 mb-4">
-                      Found {publications.length} publications from your ORCID profile
+                    <p className="mb-4 text-sm text-gray-600">
+                      Found {publications.length} publications from your ORCID
+                      profile
                     </p>
-                    <div className="max-h-64 overflow-y-auto space-y-3">
+                    <div className="max-h-64 space-y-3 overflow-y-auto">
                       {publications.slice(0, 5).map((pub) => (
-                        <div key={pub.id} className="p-3 bg-light-gray rounded-lg">
-                          <h4 className="font-medium text-charcoal text-sm">{pub.title}</h4>
-                          <p className="text-xs text-gray-600 mt-1">
-                            {pub.journal && `${pub.journal} • `}{pub.year}
-                            {pub.authors.length > 0 && ` • ${pub.authors[0]}${pub.authors.length > 1 ? ' et al.' : ''}`}
+                        <div
+                          key={pub.id}
+                          className="bg-light-gray rounded-lg p-3"
+                        >
+                          <h4 className="text-charcoal text-sm font-medium">
+                            {pub.title}
+                          </h4>
+                          <p className="mt-1 text-xs text-gray-600">
+                            {pub.journal && `${pub.journal} • `}
+                            {pub.year}
+                            {pub.authors.length > 0 &&
+                              ` • ${pub.authors[0]}${pub.authors.length > 1 ? ' et al.' : ''}`}
                           </p>
                         </div>
                       ))}
                     </div>
                     {publications.length > 5 && (
-                      <p className="text-xs text-gray-500 text-center">
+                      <p className="text-center text-xs text-gray-500">
                         and {publications.length - 5} more publications...
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-600 text-sm">
-                    {importingOrcid ? 'Importing publications...' : 'No publications found or not yet imported.'}
+                  <p className="text-sm text-gray-600">
+                    {importingOrcid
+                      ? 'Importing publications...'
+                      : 'No publications found or not yet imported.'}
                   </p>
                 )}
               </div>
@@ -314,11 +362,16 @@ export default function CreateProfile() {
 
             {/* Profile Settings */}
             <div className="card">
-              <h2 className="text-xl font-semibold text-charcoal mb-6">Profile Settings</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-charcoal mb-6 text-xl font-semibold">
+                Profile Settings
+              </h2>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label htmlFor="template" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="template"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     Profile Template
                   </label>
                   <select
@@ -326,7 +379,7 @@ export default function CreateProfile() {
                     name="template"
                     value={formData.template}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   >
                     <option value="minimal">Minimal Academic</option>
                     <option value="research-focused">Research-Focused</option>
@@ -336,7 +389,10 @@ export default function CreateProfile() {
                 </div>
 
                 <div>
-                  <label htmlFor="visibility" className="block text-sm font-medium text-charcoal mb-2">
+                  <label
+                    htmlFor="visibility"
+                    className="text-charcoal mb-2 block text-sm font-medium"
+                  >
                     Profile Visibility
                   </label>
                   <select
@@ -344,10 +400,12 @@ export default function CreateProfile() {
                     name="visibility"
                     value={formData.visibility}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-green focus:border-transparent"
+                    className="focus:ring-sage-green w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
                   >
                     <option value="public">Public</option>
-                    <option value="unlisted">Unlisted (accessible via link)</option>
+                    <option value="unlisted">
+                      Unlisted (accessible via link)
+                    </option>
                     <option value="private">Private</option>
                   </select>
                 </div>
@@ -359,11 +417,11 @@ export default function CreateProfile() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="btn-primary text-lg py-3 px-8"
+                className="btn-primary px-8 py-3 text-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                     Creating Profile...
                   </div>
                 ) : (
@@ -375,5 +433,5 @@ export default function CreateProfile() {
         </div>
       </div>
     </div>
-  )
+  );
 }

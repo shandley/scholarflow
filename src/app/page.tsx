@@ -1,24 +1,29 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-warm-beige">
+    <div className="bg-warm-beige min-h-screen">
       {/* Hero Section */}
       <section className="relative px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-charcoal sm:text-6xl">
+            <h1 className="text-charcoal text-4xl font-bold tracking-tight sm:text-6xl">
               Where academic productivity flows
-              <span className="block text-sage-green">seamlessly through modern web technology</span>
+              <span className="text-sage-green block">
+                seamlessly through modern web technology
+              </span>
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">
-              Create sophisticated academic websites with progressive complexity. 
-              Track your research productivity, manage your academic legacy, 
-              and network with scholars worldwide.
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-600">
+              Create sophisticated academic websites with progressive
+              complexity. Track your research productivity, manage your academic
+              legacy, and network with scholars worldwide.
             </p>
             <div className="mt-10 flex items-center justify-center gap-6">
               <a href="/auth/signin" className="btn-primary">
                 Get Started - It&apos;s Free
               </a>
-              <a href="#features" className="text-sm font-semibold leading-6 text-charcoal">
+              <a
+                href="#features"
+                className="text-charcoal text-sm font-semibold leading-6"
+              >
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>
@@ -47,10 +52,10 @@ export default function Home() {
       </section>
 
       {/* Three Tiers Section */}
-      <section id="features" className="bg-white py-24 px-6 lg:px-8">
+      <section id="features" className="bg-white px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-charcoal sm:text-4xl">
+          <div className="mb-16 text-center">
+            <h2 className="text-charcoal text-3xl font-bold sm:text-4xl">
               Choose Your Academic Journey
             </h2>
             <p className="mt-4 text-lg text-gray-600">
@@ -62,11 +67,16 @@ export default function Home() {
             {/* Tier 1 */}
             <div className="card">
               <div className="mb-4">
-                <span className="metric-badge activity-research">5-minute setup</span>
+                <span className="metric-badge activity-research">
+                  5-minute setup
+                </span>
               </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-2">Academic CV Website</h3>
-              <p className="text-gray-600 mb-6">
-                Perfect for faculty and postdocs who want a quick professional presence.
+              <h3 className="text-charcoal mb-2 text-2xl font-bold">
+                Academic CV Website
+              </h3>
+              <p className="mb-6 text-gray-600">
+                Perfect for faculty and postdocs who want a quick professional
+                presence.
               </p>
               <ul className="feature-list text-sm text-gray-600">
                 <li>
@@ -89,14 +99,21 @@ export default function Home() {
             </div>
 
             {/* Tier 2 */}
-            <div className="card" style={{border: '2px solid #8FA68E'}}>
+            <div className="card" style={{ border: '2px solid #8FA68E' }}>
               <div className="mb-4">
-                <span className="metric-badge activity-writing">15-minute setup</span>
-                <span className="ml-2 text-xs font-semibold text-sage-green">POPULAR</span>
+                <span className="metric-badge activity-writing">
+                  15-minute setup
+                </span>
+                <span className="text-sage-green ml-2 text-xs font-semibold">
+                  POPULAR
+                </span>
               </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-2">Academic Dashboard</h3>
-              <p className="text-gray-600 mb-6">
-                Ideal for graduate students and early career researchers tracking progress.
+              <h3 className="text-charcoal mb-2 text-2xl font-bold">
+                Academic Dashboard
+              </h3>
+              <p className="mb-6 text-gray-600">
+                Ideal for graduate students and early career researchers
+                tracking progress.
               </p>
               <ul className="feature-list text-sm text-gray-600">
                 <li>
@@ -121,11 +138,16 @@ export default function Home() {
             {/* Tier 3 */}
             <div className="card">
               <div className="mb-4">
-                <span className="metric-badge activity-collaboration">30-minute setup</span>
+                <span className="metric-badge activity-collaboration">
+                  30-minute setup
+                </span>
               </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-2">Legacy Platform</h3>
-              <p className="text-gray-600 mb-6">
-                For senior faculty with complex networks and mentorship tracking.
+              <h3 className="text-charcoal mb-2 text-2xl font-bold">
+                Legacy Platform
+              </h3>
+              <p className="mb-6 text-gray-600">
+                For senior faculty with complex networks and mentorship
+                tracking.
               </p>
               <ul className="feature-list text-sm text-gray-600">
                 <li>
@@ -151,16 +173,20 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-sage-green py-16 px-6 lg:px-8">
+      <section className="bg-sage-green px-6 py-16 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Ready to showcase your academic journey?
           </h2>
-          <p className="mt-4 text-lg text-white" style={{opacity: 0.9}}>
-            Join thousands of academics who are already using ScholarFlow to build their digital presence.
+          <p className="mt-4 text-lg text-white" style={{ opacity: 0.9 }}>
+            Join thousands of academics who are already using ScholarFlow to
+            build their digital presence.
           </p>
           <div className="mt-8">
-            <a href="/auth/signin" className="bg-white text-sage-green px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+            <a
+              href="/auth/signin"
+              className="text-sage-green inline-block rounded-lg bg-white px-8 py-3 font-semibold transition-colors hover:bg-gray-100"
+            >
               Start Building Your Profile
             </a>
           </div>
@@ -168,16 +194,27 @@ export default function Home() {
       </section>
 
       {/* Simple Footer */}
-      <footer className="bg-charcoal text-white py-8 px-6">
+      <footer className="bg-charcoal px-6 py-8 text-white">
         <div className="mx-auto max-w-7xl text-center">
           <p className="text-sm">
             © 2024 ScholarFlow. Built with ❤️ for the academic community.
           </p>
           <div className="mt-4 flex justify-center gap-6 text-sm">
-            <a href="#" className="footer-link">About</a>
-            <a href="#" className="footer-link">Privacy</a>
-            <a href="#" className="footer-link">Terms</a>
-            <a href="https://github.com/shandley/scholarflow" className="footer-link">GitHub</a>
+            <a href="#" className="footer-link">
+              About
+            </a>
+            <a href="#" className="footer-link">
+              Privacy
+            </a>
+            <a href="#" className="footer-link">
+              Terms
+            </a>
+            <a
+              href="https://github.com/shandley/scholarflow"
+              className="footer-link"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </footer>

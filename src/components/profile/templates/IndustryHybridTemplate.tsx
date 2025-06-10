@@ -1,39 +1,43 @@
-import type { AcademicProfile } from '@/types/profile'
-import PublicationList from '../PublicationList'
-import ContactInfo from '../ContactInfo'
-import Link from 'next/link'
+import type { AcademicProfile } from '@/types/profile';
+import PublicationList from '../PublicationList';
+import ContactInfo from '../ContactInfo';
+import Link from 'next/link';
 
 interface IndustryHybridTemplateProps {
-  profile: AcademicProfile
+  profile: AcademicProfile;
 }
 
-export default function IndustryHybridTemplate({ profile }: IndustryHybridTemplateProps) {
+export default function IndustryHybridTemplate({
+  profile,
+}: IndustryHybridTemplateProps) {
   return (
-    <div className="min-h-screen bg-charcoal text-white">
+    <div className="bg-charcoal min-h-screen text-white">
       <div className="container mx-auto px-6 py-12">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto max-w-6xl">
           {/* Hero Section */}
-          <header className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6">
-              {profile.displayName || `${profile.firstName} ${profile.lastName}`}
+          <header className="mb-16 text-center">
+            <h1 className="mb-6 text-5xl font-bold">
+              {profile.displayName ||
+                `${profile.firstName} ${profile.lastName}`}
             </h1>
-            
+
             {profile.currentPosition && (
-              <p className="text-2xl text-gray-300 mb-4">
+              <p className="mb-4 text-2xl text-gray-300">
                 {profile.currentPosition}
-                {profile.currentInstitution && ` at ${profile.currentInstitution}`}
+                {profile.currentInstitution &&
+                  ` at ${profile.currentInstitution}`}
               </p>
             )}
-            
+
             {profile.currentDepartment && (
-              <p className="text-xl text-gray-400 mb-8">
+              <p className="mb-8 text-xl text-gray-400">
                 {profile.currentDepartment}
               </p>
             )}
 
             {profile.bio && (
-              <div className="max-w-4xl mx-auto mb-12">
-                <p className="text-xl text-gray-200 leading-relaxed">
+              <div className="mx-auto mb-12 max-w-4xl">
+                <p className="text-xl leading-relaxed text-gray-200">
                   {profile.bio}
                 </p>
               </div>
@@ -46,50 +50,70 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
 
           {/* Key Highlights */}
           <section className="mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-sage-green p-6 rounded-lg text-center">
-                <div className="text-3xl font-bold mb-2">{profile.publications.length}</div>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              <div className="bg-sage-green rounded-lg p-6 text-center">
+                <div className="mb-2 text-3xl font-bold">
+                  {profile.publications.length}
+                </div>
                 <div className="text-sm opacity-90">Publications</div>
               </div>
-              <div className="bg-soft-blue p-6 rounded-lg text-center">
-                <div className="text-3xl font-bold mb-2">
-                  {profile.publications.reduce((sum, pub) => sum + (pub.citationCount || 0), 0)}
+              <div className="bg-soft-blue rounded-lg p-6 text-center">
+                <div className="mb-2 text-3xl font-bold">
+                  {profile.publications.reduce(
+                    (sum, pub) => sum + (pub.citationCount || 0),
+                    0
+                  )}
                 </div>
                 <div className="text-sm opacity-90">Total Citations</div>
               </div>
-              <div className="bg-gray-700 p-6 rounded-lg text-center">
-                <div className="text-3xl font-bold mb-2">
-                  {profile.grants.filter(g => g.status === 'Active').length}
+              <div className="rounded-lg bg-gray-700 p-6 text-center">
+                <div className="mb-2 text-3xl font-bold">
+                  {profile.grants.filter((g) => g.status === 'Active').length}
                 </div>
                 <div className="text-sm opacity-90">Active Projects</div>
               </div>
             </div>
           </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-12">
+            <div className="space-y-12 lg:col-span-2">
               {/* Experience */}
               {profile.positions.length > 0 && (
                 <section>
-                  <h2 className="text-3xl font-bold mb-8 text-sage-green">Experience</h2>
+                  <h2 className="text-sage-green mb-8 text-3xl font-bold">
+                    Experience
+                  </h2>
                   <div className="space-y-6">
                     {profile.positions.map((position) => (
-                      <div key={position.id} className="bg-gray-800 p-6 rounded-lg">
-                        <div className="flex justify-between items-start mb-4">
+                      <div
+                        key={position.id}
+                        className="rounded-lg bg-gray-800 p-6"
+                      >
+                        <div className="mb-4 flex items-start justify-between">
                           <div>
-                            <h3 className="text-xl font-bold">{position.title}</h3>
-                            <p className="text-gray-300">{position.institution}</p>
+                            <h3 className="text-xl font-bold">
+                              {position.title}
+                            </h3>
+                            <p className="text-gray-300">
+                              {position.institution}
+                            </p>
                             {position.department && (
-                              <p className="text-gray-400 text-sm">{position.department}</p>
+                              <p className="text-sm text-gray-400">
+                                {position.department}
+                              </p>
                             )}
                           </div>
                           <div className="text-right text-sm text-gray-400">
-                            {position.endYear ? `${position.startYear} - ${position.endYear}` : `${position.startYear} - Present`}
+                            {position.endYear
+                              ? `${position.startYear} - ${position.endYear}`
+                              : `${position.startYear} - Present`}
                           </div>
                         </div>
                         {position.description && (
-                          <p className="text-gray-300">{position.description}</p>
+                          <p className="text-gray-300">
+                            {position.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -100,10 +124,12 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
               {/* Projects & Publications */}
               {profile.publications.length > 0 && (
                 <section>
-                  <h2 className="text-3xl font-bold mb-8 text-sage-green">Research & Publications</h2>
-                  <PublicationList 
-                    publications={profile.publications} 
-                    showAll={true} 
+                  <h2 className="text-sage-green mb-8 text-3xl font-bold">
+                    Research & Publications
+                  </h2>
+                  <PublicationList
+                    publications={profile.publications}
+                    showAll={true}
                     theme="dark"
                     detailed={true}
                   />
@@ -113,34 +139,58 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
               {/* Grants & Funding */}
               {profile.grants.length > 0 && (
                 <section>
-                  <h2 className="text-3xl font-bold mb-8 text-sage-green">Funding & Grants</h2>
+                  <h2 className="text-sage-green mb-8 text-3xl font-bold">
+                    Funding & Grants
+                  </h2>
                   <div className="space-y-4">
                     {profile.grants.map((grant) => (
-                      <div key={grant.id} className="bg-gray-800 p-6 rounded-lg">
-                        <div className="flex justify-between items-start mb-3">
+                      <div
+                        key={grant.id}
+                        className="rounded-lg bg-gray-800 p-6"
+                      >
+                        <div className="mb-3 flex items-start justify-between">
                           <h3 className="text-xl font-bold">{grant.title}</h3>
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            grant.status === 'Active' ? 'bg-green-600 text-white' : 
-                            grant.status === 'Completed' ? 'bg-blue-600 text-white' : 'bg-yellow-600 text-white'
-                          }`}>
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                              grant.status === 'Active'
+                                ? 'bg-green-600 text-white'
+                                : grant.status === 'Completed'
+                                  ? 'bg-blue-600 text-white'
+                                  : 'bg-yellow-600 text-white'
+                            }`}
+                          >
                             {grant.status}
                           </span>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-300 mb-3">
+                        <div className="mb-3 grid grid-cols-1 gap-4 text-sm text-gray-300 md:grid-cols-3">
                           <div>
-                            <span className="font-medium text-white">Agency:</span> {grant.agency}
+                            <span className="font-medium text-white">
+                              Agency:
+                            </span>{' '}
+                            {grant.agency}
                           </div>
                           <div>
-                            <span className="font-medium text-white">Role:</span> {grant.role}
+                            <span className="font-medium text-white">
+                              Role:
+                            </span>{' '}
+                            {grant.role}
                           </div>
                           <div>
-                            <span className="font-medium text-white">Period:</span> {grant.startYear}
-                            {grant.endYear ? ` - ${grant.endYear}` : ' - Present'}
+                            <span className="font-medium text-white">
+                              Period:
+                            </span>{' '}
+                            {grant.startYear}
+                            {grant.endYear
+                              ? ` - ${grant.endYear}`
+                              : ' - Present'}
                           </div>
                         </div>
                         {grant.amount && (
-                          <div className="text-sm text-gray-300 mb-3">
-                            <span className="font-medium text-white">Amount:</span> {grant.amount}
+                          <div className="mb-3 text-sm text-gray-300">
+                            <span className="font-medium text-white">
+                              Amount:
+                            </span>{' '}
+                            {grant.amount}
                           </div>
                         )}
                         {grant.description && (
@@ -154,28 +204,52 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-1 space-y-8">
+            <div className="space-y-8 lg:col-span-1">
               {/* Skills & Expertise */}
-              <section className="bg-gray-800 p-6 rounded-lg">
-                <h3 className="text-xl font-bold mb-4 text-sage-green">Skills & Expertise</h3>
+              <section className="rounded-lg bg-gray-800 p-6">
+                <h3 className="text-sage-green mb-4 text-xl font-bold">
+                  Skills & Expertise
+                </h3>
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Technical Skills</h4>
+                    <h4 className="mb-2 font-semibold text-white">
+                      Technical Skills
+                    </h4>
                     <div className="flex flex-wrap gap-2">
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Python</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Machine Learning</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">R</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Statistics</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Bioinformatics</span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Python
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Machine Learning
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        R
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Statistics
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Bioinformatics
+                      </span>
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Domain Expertise</h4>
+                    <h4 className="mb-2 font-semibold text-white">
+                      Domain Expertise
+                    </h4>
                     <div className="flex flex-wrap gap-2">
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Genomics</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">AI/ML</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Data Science</span>
-                      <span className="bg-gray-700 px-2 py-1 rounded text-xs">Biotechnology</span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Genomics
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        AI/ML
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Data Science
+                      </span>
+                      <span className="rounded bg-gray-700 px-2 py-1 text-xs">
+                        Biotechnology
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -183,20 +257,28 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
 
               {/* Education */}
               {profile.education.length > 0 && (
-                <section className="bg-gray-800 p-6 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4 text-sage-green">Education</h3>
+                <section className="rounded-lg bg-gray-800 p-6">
+                  <h3 className="text-sage-green mb-4 text-xl font-bold">
+                    Education
+                  </h3>
                   <div className="space-y-4">
                     {profile.education.map((edu) => (
                       <div key={edu.id}>
                         <h4 className="font-semibold text-white">
                           {edu.degree} in {edu.field}
                         </h4>
-                        <p className="text-gray-300 text-sm">{edu.institution}</p>
-                        <p className="text-gray-400 text-xs">
-                          {edu.endYear ? `${edu.startYear} - ${edu.endYear}` : `${edu.startYear} - Present`}
+                        <p className="text-sm text-gray-300">
+                          {edu.institution}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {edu.endYear
+                            ? `${edu.startYear} - ${edu.endYear}`
+                            : `${edu.startYear} - Present`}
                         </p>
                         {edu.description && (
-                          <p className="text-gray-300 text-sm mt-2">{edu.description}</p>
+                          <p className="mt-2 text-sm text-gray-300">
+                            {edu.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -206,18 +288,28 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
 
               {/* Awards */}
               {profile.awards.length > 0 && (
-                <section className="bg-gray-800 p-6 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4 text-sage-green">Awards & Recognition</h3>
+                <section className="rounded-lg bg-gray-800 p-6">
+                  <h3 className="text-sage-green mb-4 text-xl font-bold">
+                    Awards & Recognition
+                  </h3>
                   <div className="space-y-3">
                     {profile.awards.map((award) => (
                       <div key={award.id}>
-                        <h4 className="font-semibold text-white text-sm">{award.title}</h4>
-                        <p className="text-gray-300 text-xs">{award.organization}, {award.year}</p>
+                        <h4 className="text-sm font-semibold text-white">
+                          {award.title}
+                        </h4>
+                        <p className="text-xs text-gray-300">
+                          {award.organization}, {award.year}
+                        </p>
                         {award.amount && (
-                          <p className="text-gray-400 text-xs">{award.amount}</p>
+                          <p className="text-xs text-gray-400">
+                            {award.amount}
+                          </p>
                         )}
                         {award.description && (
-                          <p className="text-gray-300 text-xs mt-1">{award.description}</p>
+                          <p className="mt-1 text-xs text-gray-300">
+                            {award.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -226,24 +318,34 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
               )}
 
               {/* Industry Experience */}
-              <section className="bg-gray-800 p-6 rounded-lg">
-                <h3 className="text-xl font-bold mb-4 text-sage-green">Industry Connections</h3>
+              <section className="rounded-lg bg-gray-800 p-6">
+                <h3 className="text-sage-green mb-4 text-xl font-bold">
+                  Industry Connections
+                </h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-sage-green rounded-full"></div>
-                    <span className="text-gray-300 text-sm">Consultant at TechBio Corp</span>
+                    <div className="bg-sage-green h-3 w-3 rounded-full"></div>
+                    <span className="text-sm text-gray-300">
+                      Consultant at TechBio Corp
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-sage-green rounded-full"></div>
-                    <span className="text-gray-300 text-sm">Advisory Board Member</span>
+                    <div className="bg-sage-green h-3 w-3 rounded-full"></div>
+                    <span className="text-sm text-gray-300">
+                      Advisory Board Member
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-sage-green rounded-full"></div>
-                    <span className="text-gray-300 text-sm">Patent Applications: 3</span>
+                    <div className="bg-sage-green h-3 w-3 rounded-full"></div>
+                    <span className="text-sm text-gray-300">
+                      Patent Applications: 3
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-sage-green rounded-full"></div>
-                    <span className="text-gray-300 text-sm">Startup Experience</span>
+                    <div className="bg-sage-green h-3 w-3 rounded-full"></div>
+                    <span className="text-sm text-gray-300">
+                      Startup Experience
+                    </span>
                   </div>
                 </div>
               </section>
@@ -251,7 +353,7 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
           </div>
 
           {/* Footer */}
-          <footer className="text-center text-gray-400 text-sm pt-12 mt-12 border-t border-gray-700">
+          <footer className="mt-12 border-t border-gray-700 pt-12 text-center text-sm text-gray-400">
             <p>
               Profile powered by{' '}
               <Link href="/" className="text-sage-green hover:underline">
@@ -262,5 +364,5 @@ export default function IndustryHybridTemplate({ profile }: IndustryHybridTempla
         </div>
       </div>
     </div>
-  )
+  );
 }

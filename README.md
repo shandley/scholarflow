@@ -11,12 +11,14 @@ ScholarFlow is a modern academic productivity and networking platform that enabl
 ### Three-Tier Progressive Enhancement
 
 1. **Tier 1: Academic CV Website** (5-minute setup)
+
    - Professional academic profile
    - Auto-updating publications from ORCID
    - Clean, responsive design
    - Custom domain support
 
 2. **Tier 2: Academic Dashboard** (15-minute setup)
+
    - Activity tracking and research heatmaps
    - Goal setting and progress visualization
    - Collaboration network
@@ -65,6 +67,7 @@ Visit [http://localhost:3000](http://localhost:3000) to see the app.
 ## 🎨 Design Philosophy
 
 ScholarFlow embraces a modern minimalist design with academic authenticity:
+
 - Clean, spacious layouts with generous white space
 - Soft, muted color palette with strategic academic accent colors
 - Data-driven precision with human warmth and personality

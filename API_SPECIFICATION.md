@@ -1,19 +1,24 @@
 # ScholarFlow API Specification
 
 ## Overview
+
 RESTful API built with Next.js API Routes, deployed as Vercel Functions. All endpoints follow REST conventions and return JSON responses.
 
 ## Base URL
+
 - Development: `http://localhost:3000/api`
 - Production: `https://scholarflow.com/api`
 
 ## Authentication
+
 JWT-based authentication using NextAuth.js with refresh tokens.
 
 ### Auth Endpoints
 
 #### POST /api/auth/signin
+
 Sign in with various providers
+
 ```typescript
 // Request
 {
@@ -40,7 +45,9 @@ Sign in with various providers
 ```
 
 #### POST /api/auth/signout
+
 Sign out current user
+
 ```typescript
 // Response
 {
@@ -50,7 +57,9 @@ Sign out current user
 ```
 
 #### GET /api/auth/session
+
 Get current session
+
 ```typescript
 // Response
 {
@@ -68,7 +77,9 @@ Get current session
 ## Profile Endpoints
 
 #### GET /api/profiles
+
 List all public profiles with pagination
+
 ```typescript
 // Query Parameters
 {
@@ -93,7 +104,9 @@ List all public profiles with pagination
 ```
 
 #### GET /api/profiles/[username]
+
 Get public profile by username
+
 ```typescript
 // Response
 {
@@ -119,7 +132,9 @@ Get public profile by username
 ```
 
 #### POST /api/profiles
+
 Create new profile (requires auth)
+
 ```typescript
 // Request
 {
@@ -143,7 +158,9 @@ Create new profile (requires auth)
 ```
 
 #### PUT /api/profiles/[id]
+
 Update profile (requires auth, owner only)
+
 ```typescript
 // Request (partial update supported)
 {
@@ -169,7 +186,9 @@ Update profile (requires auth, owner only)
 ```
 
 #### DELETE /api/profiles/[id]
+
 Delete profile (requires auth, owner only)
+
 ```typescript
 // Response
 {
@@ -182,7 +201,9 @@ Delete profile (requires auth, owner only)
 ## Publication Endpoints
 
 #### GET /api/publications
+
 Get publications for a profile
+
 ```typescript
 // Query Parameters
 {
@@ -208,7 +229,9 @@ Get publications for a profile
 ```
 
 #### POST /api/publications/sync
+
 Sync publications from external source (requires auth)
+
 ```typescript
 // Request
 {
@@ -228,7 +251,9 @@ Sync publications from external source (requires auth)
 ```
 
 #### PUT /api/publications/[id]
+
 Update publication details (requires auth, owner only)
+
 ```typescript
 // Request
 {
@@ -250,7 +275,9 @@ Update publication details (requires auth, owner only)
 ## Activity Tracking Endpoints (Tier 2)
 
 #### GET /api/activities
+
 Get activities for a profile
+
 ```typescript
 // Query Parameters
 {
@@ -284,7 +311,9 @@ Get activities for a profile
 ```
 
 #### POST /api/activities
+
 Log new activity (requires auth)
+
 ```typescript
 // Request
 {
@@ -313,7 +342,9 @@ Log new activity (requires auth)
 ## Goal Management Endpoints (Tier 2)
 
 #### GET /api/goals
+
 Get goals for a profile
+
 ```typescript
 // Query Parameters
 {
@@ -336,7 +367,9 @@ Get goals for a profile
 ```
 
 #### POST /api/goals
+
 Create new goal (requires auth)
+
 ```typescript
 // Request
 {
@@ -357,7 +390,9 @@ Create new goal (requires auth)
 ```
 
 #### PUT /api/goals/[id]/progress
+
 Update goal progress (requires auth)
+
 ```typescript
 // Request
 {
@@ -380,7 +415,9 @@ Update goal progress (requires auth)
 ## Network & Relationships Endpoints (Tier 3)
 
 #### GET /api/network/connections
+
 Get academic connections
+
 ```typescript
 // Query Parameters
 {
@@ -407,7 +444,9 @@ Get academic connections
 ```
 
 #### POST /api/network/connections
+
 Create connection request (requires auth)
+
 ```typescript
 // Request
 {
@@ -428,7 +467,9 @@ Create connection request (requires auth)
 ```
 
 #### PUT /api/network/connections/[id]/confirm
+
 Confirm connection request (requires auth)
+
 ```typescript
 // Response
 {
@@ -440,7 +481,9 @@ Confirm connection request (requires auth)
 ## Analytics Endpoints
 
 #### GET /api/analytics/profile
+
 Get profile analytics (requires auth, owner only)
+
 ```typescript
 // Query Parameters
 {
@@ -477,7 +520,9 @@ Get profile analytics (requires auth, owner only)
 ```
 
 #### POST /api/analytics/events
+
 Track analytics event
+
 ```typescript
 // Request
 {
@@ -497,7 +542,9 @@ Track analytics event
 ## File Management Endpoints
 
 #### POST /api/files/upload
+
 Upload file (requires auth)
+
 ```typescript
 // Request (multipart/form-data)
 {
@@ -520,7 +567,9 @@ Upload file (requires auth)
 ```
 
 #### GET /api/files/[id]
+
 Download file
+
 ```typescript
 // Headers
 {
@@ -532,7 +581,9 @@ Binary file data with appropriate Content-Type
 ```
 
 #### DELETE /api/files/[id]
+
 Delete file (requires auth, owner only)
+
 ```typescript
 // Response
 {
@@ -544,7 +595,9 @@ Delete file (requires auth, owner only)
 ## Search Endpoints
 
 #### GET /api/search
+
 Global search across profiles and publications
+
 ```typescript
 // Query Parameters
 {
@@ -579,7 +632,9 @@ Global search across profiles and publications
 ## Export Endpoints
 
 #### GET /api/export/cv
+
 Export CV in various formats (requires auth)
+
 ```typescript
 // Query Parameters
 {
@@ -594,7 +649,9 @@ Binary file or JSON data depending on format
 ```
 
 #### GET /api/export/data
+
 Export all user data (GDPR compliance)
+
 ```typescript
 // Query Parameters
 {
@@ -613,6 +670,7 @@ Export all user data (GDPR compliance)
 ## Error Responses
 
 All errors follow consistent format:
+
 ```typescript
 {
   error: {
@@ -625,6 +683,7 @@ All errors follow consistent format:
 ```
 
 ### Common Error Codes
+
 - `400 BAD_REQUEST`: Invalid request parameters
 - `401 UNAUTHORIZED`: Authentication required
 - `403 FORBIDDEN`: Insufficient permissions
@@ -636,12 +695,14 @@ All errors follow consistent format:
 ## Rate Limiting
 
 ### Limits by Tier
+
 - **Anonymous**: 100 requests/hour
 - **Free Tier**: 1,000 requests/hour
 - **Pro Tier**: 10,000 requests/hour
 - **Enterprise**: Unlimited
 
 ### Headers
+
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 999
@@ -651,12 +712,14 @@ X-RateLimit-Reset: 1609459200
 ## Versioning
 
 API version included in URL path:
+
 - Current: `/api/v1/`
 - Legacy support: 6 months after new version
 
 ## Webhooks (Pro/Enterprise)
 
 Configure webhooks for events:
+
 - `profile.updated`
 - `publication.added`
 - `goal.completed`
