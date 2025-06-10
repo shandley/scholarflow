@@ -16,7 +16,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <button className="btn-primary">
-                Get Started - It's Free
+                Get Started - It&apos;s Free
               </button>
               <a href="#features" className="text-sm font-semibold leading-6 text-charcoal hover:text-sage-green">
                 Learn more <span aria-hidden="true">→</span>
