@@ -1,13 +1,13 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-warm-beige">
+    <div className="min-h-screen" style={{backgroundColor: '#F5F2E8'}}>
       {/* Hero Section */}
       <section className="relative px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-charcoal sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl" style={{color: '#2F3437'}}>
               Where academic productivity flows
-              <span className="block text-sage-green">seamlessly through modern web technology</span>
+              <span className="block" style={{color: '#8FA68E'}}>seamlessly through modern web technology</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">
               Create sophisticated academic websites with progressive complexity. 
@@ -15,10 +15,10 @@ export default function Home() {
               and network with scholars worldwide.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <button className="btn-primary">
+              <button className="px-8 py-3 rounded-lg font-semibold text-white transition-colors hover:opacity-90" style={{backgroundColor: '#8FA68E'}}>
                 Get Started - It&apos;s Free
               </button>
-              <a href="#features" className="text-sm font-semibold leading-6 text-charcoal hover:text-sage-green">
+              <a href="#features" className="text-sm font-semibold leading-6 hover:opacity-80" style={{color: '#2F3437'}}>
                 Learn more <span aria-hidden="true">→</span>
               </a>
             </div>

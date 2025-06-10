@@ -2,43 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #2F3437;
-    
-    /* Academic color system */
-    --sage-green: #8FA68E;
-    --warm-beige: #F5F2E8;
-    --soft-blue: #6B8CAE;
-    --charcoal: #2F3437;
-    --light-gray: #F8F9FA;
-    
-    /* Metric colors */
-    --citation-orange: #E67E22;
-    --collaboration-blue: #3498DB;
-    --grant-gold: #F39C12;
-    --publication-green: #27AE60;
-    --teaching-purple: #9B59B6;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #1a1a1a;
-      --foreground: #F8F9FA;
-    }
-  }
-  
-  * {
-    @apply border-gray-200;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-}
-
 @layer components {
   /* Card component styling */
   .card {
