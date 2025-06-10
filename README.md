@@ -2,6 +2,8 @@
 
 > Where academic productivity flows seamlessly through modern web technology
 
+🚀 **Live Demo**: [https://scholarflow-app.vercel.app](https://scholarflow-app.vercel.app)
+
 ScholarFlow is a modern academic productivity and networking platform that enables academics to create sophisticated personal websites with progressive complexity. Built with a Surfer Diary-inspired UI design philosophy, it combines personal productivity tracking, academic legacy management, and professional networking.
 
 ## 🎯 Key Features
