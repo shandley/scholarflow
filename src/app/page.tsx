@@ -15,9 +15,9 @@ export default function Home() {
               and network with scholars worldwide.
             </p>
             <div className="mt-10 flex items-center justify-center gap-6">
-              <button className="btn-primary">
+              <a href="/auth/signin" className="btn-primary">
                 Get Started - It&apos;s Free
-              </button>
+              </a>
               <a href="#features" className="text-sm font-semibold leading-6 text-charcoal">
                 Learn more <span aria-hidden="true">→</span>
               </a>
@@ -160,9 +160,9 @@ export default function Home() {
             Join thousands of academics who are already using ScholarFlow to build their digital presence.
           </p>
           <div className="mt-8">
-            <button className="bg-white text-sage-green px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <a href="/auth/signin" className="bg-white text-sage-green px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
               Start Building Your Profile
-            </button>
+            </a>
           </div>
         </div>
       </section>

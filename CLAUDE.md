@@ -9,18 +9,21 @@ ScholarFlow is a modern academic productivity and networking platform that enabl
 - **License**: MIT (pending)
 
 ## Current Development Phase
-**Phase 1: Foundation Complete ✅**
-- **Status**: ✅ COMPLETED - Next.js 14 setup with TypeScript and Tailwind CSS
+**Sprint 2: Tier 1 MVP Complete ✅**
+- **Status**: ✅ COMPLETED - Academic CV functionality with ORCID integration
 - **Vercel Deployment**: ✅ LIVE at https://scholarflow-g2t4.vercel.app
-- **Next Steps**: Complete Vercel deployment, then begin Tier 1 MVP implementation
+- **Features**: NextAuth.js ORCID OAuth, 4 profile templates, publication import
+- **Demo**: Working profile at /profile/john-doe showcasing research-focused template
+- **Next Steps**: Sprint 3 - Data persistence with Vercel Postgres and user management
 
 ## Technology Stack
 
 ### Frontend
 - **Framework**: Next.js 14+ with TypeScript
-- **UI Library**: Tailwind CSS + Radix UI/shadcn components
+- **Styling**: Pure CSS with academic design system (Tailwind to be added later)
+- **UI Components**: Custom components with planned Radix UI/shadcn integration
 - **State Management**: Zustand for client state, TanStack Query for server state
-- **Animations**: Framer Motion for smooth transitions
+- **Animations**: CSS animations + Framer Motion for complex interactions
 - **Data Viz**: D3.js for academic visualizations
 - **Build Tool**: Vercel deployment with ISR/SSG
 
@@ -312,6 +315,104 @@ POST   /api/analytics/track
 - Database query optimization
 - Progressive enhancement approach
 
+## Lessons Learned & Best Practices
+
+### Deployment & Styling Strategy
+
+#### **CSS Strategy: Pure CSS First, Tailwind Later**
+**Decision**: Use pure CSS for initial development, add Tailwind CSS later for productivity
+**Rationale**: 
+- Eliminates build configuration issues during initial setup
+- Provides complete control over custom academic components
+- Faster deployment cycles without CSS framework dependencies
+- Better for unique visualizations (academic family trees, research heatmaps)
+
+**Implementation**:
+```css
+/* Current: Pure CSS with CSS custom properties */
+:root {
+  --sage-green: #8FA68E;
+  --warm-beige: #F5F2E8;
+  /* ... academic color system */
+}
+
+.research-card {
+  background: var(--sage-green);
+  transition: transform 0.3s ease;
+}
+```
+
+**Future Migration Plan**:
+```bash
+# When ready for faster development (Phase 2+)
+npm install -D tailwindcss@latest postcss autoprefixer
+npx tailwindcss init -p
+
+# Hybrid approach: Custom CSS + Tailwind utilities
+<div className="research-card">
+  <div className="flex items-center justify-between mb-4">
+    <h3 className="text-xl font-bold">Research Progress</h3>
+  </div>
+</div>
+```
+
+#### **Vercel Deployment Lessons**
+
+**Issue**: CSS framework version conflicts causing deployment failures
+**Solution**: Simplified CSS approach eliminates build complexity
+**Best Practice**: Start simple, add complexity incrementally
+
+**Git Integration Issues**:
+- Vercel sometimes gets stuck on old commits
+- **Solution**: Disconnect and reconnect Git repository in Vercel settings
+- **Prevention**: Use clear commit messages, force-push when needed
+
+**Environment Variables**:
+- Don't reference non-existent secrets in `vercel.json`
+- Add environment variables after successful initial deployment
+- Use `.env.example` as template for required variables
+
+### Academic Design System Implementation
+
+#### **Color Palette Strategy**
+```css
+/* Academic-focused color system */
+:root {
+  /* Primary brand colors */
+  --sage-green: #8FA68E;      /* Primary actions, accents */
+  --warm-beige: #F5F2E8;      /* Background warmth */
+  --soft-blue: #6B8CAE;       /* Academic trust */
+  --charcoal: #2F3437;        /* Primary text */
+  
+  /* Academic metric colors */
+  --citation-orange: #E67E22;
+  --collaboration-blue: #3498DB;
+  --grant-gold: #F39C12;
+  --publication-green: #27AE60;
+  --teaching-purple: #9B59B6;
+}
+```
+
+#### **Component Architecture**
+- **Cards**: Foundation for all academic content display
+- **Badges**: Status indicators for academic metrics
+- **Grids**: Responsive layouts for data presentation
+- **Typography**: Clear hierarchy for academic content
+
+### Development Workflow Insights
+
+#### **Progressive Enhancement Approach**
+1. **Phase 1**: Pure CSS, core functionality
+2. **Phase 2**: Add Tailwind for utility classes
+3. **Phase 3**: Component library integration
+4. **Phase 4**: Advanced animations and interactions
+
+#### **Academic-Specific Considerations**
+- **Data Visualization**: Custom CSS better for unique academic charts
+- **Responsive Design**: Academic users access from various devices
+- **Accessibility**: Important for academic inclusivity
+- **Performance**: Fast loading for conference networking
+
 ## Definition of Done
 
 ### Feature Completion Checklist
@@ -323,6 +424,8 @@ POST   /api/analytics/track
 - [ ] Accessibility audit passed
 - [ ] Performance benchmarks met
 - [ ] Deployed to preview environment
+- [ ] Cross-browser testing completed
+- [ ] CSS styling verified across devices
 - [ ] Product owner approval
 
 ## Resources & References
