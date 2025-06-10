@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
         
         // Create related records
         publications: data.publications ? {
-          create: data.publications.map((pub: any) => ({
+          create: data.publications.map((pub: { title: string; authors?: string[]; journal?: string; year?: number; doi?: string; url?: string; citationCount?: number; type?: string; abstract?: string; keywords?: string[]; orcidWorkId?: string }) => ({
             title: pub.title,
             authors: pub.authors || [],
             journal: pub.journal,
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
         } : undefined,
         
         socialLinks: data.socialLinks ? {
-          create: data.socialLinks.map((link: any) => ({
+          create: data.socialLinks.map((link: { platform: string; url: string; displayName?: string }) => ({
             platform: link.platform,
             url: link.url,
             displayName: link.displayName,

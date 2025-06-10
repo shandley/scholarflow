@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { ProfileData, Education, Employment } from '@/types/profile'
+import { ProfileData } from '@/types/profile'
 
-export default function EditProfilePage({ params }: { params: { username: string } }) {
+export default function EditProfilePage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -29,7 +29,7 @@ export default function EditProfilePage({ params }: { params: { username: string
         } else {
           setError('Failed to load profile')
         }
-      } catch (error) {
+      } catch {
         setError('Error loading profile')
       } finally {
         setLoading(false)
@@ -111,7 +111,7 @@ export default function EditProfilePage({ params }: { params: { username: string
         const data = await response.json()
         setError(data.error || 'Failed to update profile')
       }
-    } catch (error) {
+    } catch {
       setError('Error updating profile')
     } finally {
       setSaving(false)
@@ -153,6 +153,7 @@ export default function EditProfilePage({ params }: { params: { username: string
           <div className="photo-upload">
             <div className="photo-preview">
               {photoPreview ? (
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photoPreview} alt="Profile" />
               ) : (
                 <div className="photo-placeholder">

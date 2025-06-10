@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         mimetype: file.type,
         size: file.size,
         url,
-        type: type as any,
+        type: type as 'PROFILE_PHOTO' | 'CV' | 'OTHER',
       }
     })
 
