@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div className="min-h-screen bg-warm-beige">
-      {/* Hero Section - ScholarFlow */}
+      {/* Hero Section */}
       <section className="relative px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
