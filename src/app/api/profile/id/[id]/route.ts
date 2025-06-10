@@ -5,11 +5,12 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const profile = await prisma.profile.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         socialLinks: true,
         publications: {
@@ -38,9 +39,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
@@ -53,7 +55,7 @@ export async function PUT(
       include: { profile: true }
     })
 
-    if (!user?.profile || user.profile.id !== params.id) {
+    if (!user?.profile || user.profile.id !== id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
@@ -61,7 +63,7 @@ export async function PUT(
     
     // Update profile
     const updatedProfile = await prisma.profile.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -91,9 +93,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
@@ -106,13 +109,13 @@ export async function DELETE(
       include: { profile: true }
     })
 
-    if (!user?.profile || user.profile.id !== params.id) {
+    if (!user?.profile || user.profile.id !== id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
     // Delete profile (this will cascade delete related records)
     await prisma.profile.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ message: 'Profile deleted successfully' })
