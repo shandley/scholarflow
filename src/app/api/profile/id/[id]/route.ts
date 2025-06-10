@@ -14,14 +14,14 @@ export async function GET(
       include: {
         socialLinks: true,
         publications: {
-          orderBy: { publishedDate: 'desc' },
+          orderBy: { year: 'desc' },
           take: 20,
         },
         education: {
-          orderBy: { startDate: 'desc' },
+          orderBy: { startYear: 'desc' },
         },
-        employment: {
-          orderBy: { startDate: 'desc' },
+        positions: {
+          orderBy: { startYear: 'desc' },
         },
       },
     });
@@ -71,17 +71,16 @@ export async function PUT(
         firstName: data.firstName,
         lastName: data.lastName,
         bio: data.bio,
-        position: data.position,
-        department: data.department,
-        institution: data.institution,
-        location: data.location,
+        currentPosition: data.position,
+        currentDepartment: data.department,
+        currentInstitution: data.institution,
         website: data.website,
         profilePhoto: data.profilePhoto,
       },
       include: {
         socialLinks: true,
         publications: {
-          orderBy: { publishedDate: 'desc' },
+          orderBy: { year: 'desc' },
           take: 20,
         },
       },

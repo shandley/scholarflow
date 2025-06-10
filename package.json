@@ -23,7 +23,8 @@
     "test": "npm run type-check && npm run lint && npm run format:check",
     "test:build": "npm run test && npm run build:test",
     "precommit": "lint-staged",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
