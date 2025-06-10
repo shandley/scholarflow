@@ -16,7 +16,13 @@ export interface Publication {
   doi?: string;
   url?: string;
   citationCount?: number;
-  type: 'journal-article' | 'book' | 'book-chapter' | 'conference-paper' | 'preprint' | 'other';
+  type:
+    | 'journal-article'
+    | 'book'
+    | 'book-chapter'
+    | 'conference-paper'
+    | 'preprint'
+    | 'other';
   abstract?: string;
   keywords?: string[];
   orcidWorkId?: string;
@@ -68,7 +74,7 @@ export interface Grant {
 export interface AcademicProfile {
   id: string;
   username: string;
-  
+
   // Basic Information
   firstName: string;
   lastName: string;
@@ -76,33 +82,37 @@ export interface AcademicProfile {
   email: string;
   bio: string;
   profilePhoto?: string;
-  
+
   // Current Position
   currentPosition?: string;
   currentInstitution?: string;
   currentDepartment?: string;
-  
+
   // ORCID Integration
   orcidId?: string;
   orcidAccessToken?: string;
   lastOrcidSync?: Date;
-  
+
   // Contact & Links
   website?: string;
   socialLinks: SocialLink[];
-  
+
   // Academic Data
   publications: Publication[];
   education: Education[];
   positions: Position[];
   awards: Award[];
   grants: Grant[];
-  
+
   // Profile Settings
-  template: 'minimal' | 'research-focused' | 'teaching-oriented' | 'industry-hybrid';
+  template:
+    | 'minimal'
+    | 'research-focused'
+    | 'teaching-oriented'
+    | 'industry-hybrid';
   visibility: 'public' | 'unlisted' | 'private';
   customDomain?: string;
-  
+
   // Metadata
   createdAt: Date;
   updatedAt: Date;
@@ -158,7 +168,7 @@ export interface OrcidWork {
 export interface OrcidResponse {
   'employment-summary'?: unknown[];
   'education-summary'?: unknown[];
-  'works'?: {
+  works?: {
     group: Array<{
       'work-summary': OrcidWork[];
     }>;
@@ -196,3 +206,11 @@ export interface PublicationResponse {
   publications?: Publication[];
   error?: string;
 }
+
+// Alias for profile data in forms
+export type ProfileData = Partial<AcademicProfile> & {
+  position?: string;
+  institution?: string;
+  department?: string;
+  location?: string;
+};

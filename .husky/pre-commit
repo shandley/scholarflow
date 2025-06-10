@@ -1,0 +1,10 @@
+# Run lint-staged for formatting and linting
+npm run precommit
+
+# Run type checking
+echo "🔍 Running type check..."
+npm run type-check
+
+# Run a quick build test (optional - comment out if too slow)
+# echo "🏗️  Testing build..."
+# npm run build:test

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
 // GET /api/profile/[username] - Get public profile by username
 export async function GET(
@@ -7,37 +8,37 @@ export async function GET(
   { params }: { params: Promise<{ username: string }> }
 ) {
   try {
-    const { username } = await params
+    const { username } = await params;
 
     const profile = await prisma.profile.findUnique({
-      where: { 
+      where: {
         username,
         visibility: {
-          in: ['PUBLIC', 'UNLISTED']
-        }
+          in: ['PUBLIC', 'UNLISTED'],
+        },
       },
       include: {
         publications: {
-          orderBy: { year: 'desc' }
+          orderBy: { year: 'desc' },
         },
         education: {
-          orderBy: { startYear: 'desc' }
+          orderBy: { startYear: 'desc' },
         },
         positions: {
-          orderBy: { startYear: 'desc' }
+          orderBy: { startYear: 'desc' },
         },
         awards: {
-          orderBy: { year: 'desc' }
+          orderBy: { year: 'desc' },
         },
         grants: {
-          orderBy: { startYear: 'desc' }
+          orderBy: { startYear: 'desc' },
         },
         socialLinks: true,
-      }
-    })
+      },
+    });
 
     if (!profile) {
-      return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
     // Transform enums to match frontend expectations
@@ -45,20 +46,23 @@ export async function GET(
       ...profile,
       template: profile.template.toLowerCase().replace('_', '-'),
       visibility: profile.visibility.toLowerCase(),
-      publications: profile.publications.map(pub => ({
+      publications: profile.publications.map((pub: any) => ({
         ...pub,
-        type: pub.type.toLowerCase().replace('_', '-')
+        type: pub.type.toLowerCase().replace('_', '-'),
       })),
-      grants: profile.grants.map(grant => ({
+      grants: profile.grants.map((grant: any) => ({
         ...grant,
         role: grant.role.replace('_', '-'),
-        status: grant.status.charAt(0) + grant.status.slice(1).toLowerCase()
-      }))
-    }
+        status: grant.status.charAt(0) + grant.status.slice(1).toLowerCase(),
+      })),
+    };
 
-    return NextResponse.json({ profile: transformedProfile })
+    return NextResponse.json({ profile: transformedProfile });
   } catch (error) {
-    console.error('Error fetching profile:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Error fetching profile:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
